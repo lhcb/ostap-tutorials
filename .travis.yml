@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+- node
+addons:
+  apt:
+    packages:
+    - calibre
+    - calibre-bin
+before_install:
+- npm install gitbook-cli -g
+install:
+- gitbook install
+- npm install svgexport -g
+before_script:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
+script:
+- gitbook pdf
+- cp book.pdf ostap-tutorials.pdf
+- gitbook build
+after_success:
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
+  deploy.sh
+env:
+  global:
+    secure: l4/jpfrHBO8isLrESGsFaMDVsioXmpruM9CIxRja3G2rDvcomplNq9fiTYUKIgkzc1Ge33ChNfGmYCbTQqzmI91oi4JrMfkAAxZQLqJCdY1lyx834qY4L3wP7u4knKGk6Asxezif90dZCDaqlXDlgWRoD06dlIkctTKIgDq+r7k0A/aFq5VoVdcL5/OBYDFlz4pwVcxtoM1XIC2kl4cC8Td5YFxWJQp04DR6WertpyAwD0GvHaKZ4UrLcCia+DT/60NEswuPDSAM3xcnHV3k2nRyi+GCEf6cUS/EUrqSUY4JkfOOe8JcIEKyqV3Qh2w5W7qkn89S2tudaL+6R7NhfQj/htfBHs7JMYyroLp2XcoYyYFxP4Qw80/SwcPCIRX7d/iOzLSBiCSq4AgNtJN8IM3oI47wqVtJyRPhDj4QqVObTAQIQzj2ntJmi3PmmE6X4JdgdvPwaHcfCa3JUKdlkUkAJYcH5qFzOOb96KX4Zj9ToCxu4HeetSUwqo4xWXRwNTAvyAEbfIyRWVnjtd3RnijwkbEPpreVAhyZfvyrszP3MGp93jWJIVKiNMmbF6VTTQVzPW6Pf5GxRTQmxvYHo80z9jXes7svhme2dz6quRGyDW/bLbnQ+QB2eVGkL2DKCpE4IX8E9iQ0ChzWWLUeRQu+69N/0xze2q/wPwb7FR0=
