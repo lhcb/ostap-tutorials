@@ -350,6 +350,14 @@ eff2 = <span class="hljs-number">1</span>/(<span class="hljs-number">1</span>+re
 eff3 = accepted %  total       <span class="hljs-comment">## everything is correct (binomial)</span>
 eff4 = accepted // total       <span class="hljs-comment">## correct binomial, if both histograms are &quot;natural&quot;</span>
 </code></pre>
+<h4 id="running-sums-and-the-efficiencies-of-cuts"><em>Running sums and the efficiencies of cuts</em></h4>
+<pre><code class="lang-python">h1 = histo.sumv ()        <span class="hljs-comment">## increasing order: sum(first,x) </span>
+h2 = histo.sumv ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## decreasing order: sum(x,last )</span>
+</code></pre>
+<p>Such functionality immediately allows to calculate efficiency historgrams using <code>effic</code> method:</p>
+<pre><code class="lang-python">h1 = histo.effic ()        <span class="hljs-comment">## efficiency of var&lt;x cut </span>
+h2 = histo.effic ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## efficiency of var&gt;x cut</span>
+</code></pre>
 <h4 id="math-functions"><em>Math functions</em></h4>
 <p>The standard math-functions can be applied to the histoigram (bin-by-bin):</p>
 <pre><code class="lang-python"><span class="hljs-keyword">from</span> LHCbMath.math_ve <span class="hljs-keyword">import</span> *
@@ -361,7 +369,19 @@ h3 = exp ( abs ( histo ) )
 <h4 id="sampling"><em>Sampling</em></h4>
 <p>There is an easy way to sample the histograms according to their content, e.g. for toy-experiments:</p>
 <pre><code class="lang-python">h1 = histo.sample() <span class="hljs-comment">## make a random histogram with content sampled according to bin+-error in original histo</span>
-h2 = histo.sample( accept = <span class="hljs-keyword">lambda</span> s : s &gt; <span class="hljs-number">0</span> ) <span class="hljs-comment">##sample but require that sampled values are positive</span>
+h2 = histo.sample( accept = <span class="hljs-keyword">lambda</span> s : s &gt; <span class="hljs-number">0</span> ) <span class="hljs-comment">##sample but require that sampled values are positive </span>
+
+<span class="hljs-comment">#### Smearing/convolution with gaussian</span>
+It <span class="hljs-keyword">is</span> very easy to smear <span class="hljs-number">1</span>D histogram according to gaussian resolution 
+```python
+h1 = histo.smear ( <span class="hljs-number">0.015</span> ) <span class="hljs-comment">## apply &quot;smearing&quot; with sigma = 0.015</span>
+</code></pre>
+<h4 id="rebin">Rebin</h4>
+<pre><code class="lang-python">original = ... <span class="hljs-comment">## the original historgam to be rebinned </span>
+template = ... <span class="hljs-comment">## historgams that deifned new binning  scheme  </span>
+rebin1   = original.rebinNumbers  ( template ) <span class="hljs-comment">## compare it!  </span>
+rebin2   = original.rebinFunction ( template ) <span class="hljs-comment">## compare it!</span>
+`
 </code></pre>
 
                                 
@@ -406,7 +426,7 @@ h2 = histo.sample( accept = <span class="hljs-keyword">lambda</span> s : s &gt; 
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Simple optations with histograms","level":"2.1.2","depth":2,"next":{"title":"Contributing","level":"3.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/Histos.md","mtime":"2018-03-06T15:48:32.103Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-06T15:50:52.103Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Simple optations with histograms","level":"2.1.2","depth":2,"next":{"title":"Contributing","level":"3.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/Histos.md","mtime":"2018-03-06T15:58:39.835Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-06T16:00:55.622Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
