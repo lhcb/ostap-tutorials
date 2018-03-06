@@ -10,7 +10,7 @@ histo = ...
 print histo[2]    ## print the value/error associated with the 2nd bin 
 print histo(2.21) ## print the value/error at x=2.21 
 ```
-Note that the result in both cases is of type `VE`, _val+/-err_, and the interpolation is involved in the second case. The interpolation can be controlled using `interpolation` argument 
+Note that the result in both cases is of type `VE`, _value+/-uncertainty_, and the interpolation is involved in the second case. The interpolation can be controlled using `interpolation` argument 
 ```python
 print histo ( 2.1 , interpolation = 0 ) ## no interpolation 
 print histo ( 2.1 , interpolation = 1 ) ## linear interpolation 
