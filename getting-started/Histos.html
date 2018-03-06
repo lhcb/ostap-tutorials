@@ -1,0 +1,465 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Simple optations with histograms · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="The Starterkit team and contributors">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-panels/panels.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-katex-auto-render/katex.min.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../CONTRIBUTING.html" />
+    
+    
+    <link rel="prev" href="VE.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    The Ostap tutorials
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Getting started
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="VE.html">
+            
+                <a href="VE.html">
+            
+                    
+                    Values with uncertainties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.1.2" data-path="Histos.html">
+            
+                <a href="Histos.html">
+            
+                    
+                    Simple optations with histograms
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../CONTRIBUTING.html">
+            
+                <a href="../CONTRIBUTING.html">
+            
+                    
+                    Contributing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="formatting-examples.html">
+            
+                <a href="formatting-examples.html">
+            
+                    
+                    Examples of formatting
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" >
+            
+                <a target="_blank" href="ref://ostap-tutorials.pdf">
+            
+                    
+                    Download PDF
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Simple optations with histograms</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="simple-operations-with-histograms">Simple operations with histograms</h1>
+<h2 id="historgam-content">Historgam content</h2>
+<p><code>Ostap.PyRoUts</code> module provides two ways to access the histogram content</p>
+<ul>
+<li>by bin index, using operator <code>[]</code>: for 1D historgam index is a simple integer number, for 2D and 3D-histograms the bin index is a 2 or 3-element tuple</li>
+<li>using <em>functional</em> interface with operator<code>()</code>.<pre><code class="lang-python">histo = ...
+<span class="hljs-keyword">print</span> histo[<span class="hljs-number">2</span>]    <span class="hljs-comment">## print the value/error associated with the 2nd bin </span>
+<span class="hljs-keyword">print</span> histo(<span class="hljs-number">2.21</span>) <span class="hljs-comment">## print the value/error at x=2.21</span>
+</code></pre>
+Note that the result in both cases is of type <code>VE</code>, <em>val+/-err</em>, and the interpolation is involved in the second case. The interpolation can be controlled using <code>interpolation</code> argument <pre><code class="lang-python"><span class="hljs-keyword">print</span> histo ( <span class="hljs-number">2.1</span> , interpolation = <span class="hljs-number">0</span> ) <span class="hljs-comment">## no interpolation </span>
+<span class="hljs-keyword">print</span> histo ( <span class="hljs-number">2.1</span> , interpolation = <span class="hljs-number">1</span> ) <span class="hljs-comment">## linear interpolation </span>
+<span class="hljs-keyword">print</span> histo ( <span class="hljs-number">2.1</span> , interpolation = <span class="hljs-number">2</span> ) <span class="hljs-comment">## parabolic interpolation </span>
+<span class="hljs-keyword">print</span> histo ( <span class="hljs-number">2.1</span> , interpolation = <span class="hljs-number">3</span> ) <span class="hljs-comment">## cubic interpolation</span>
+</code></pre>
+Similarly for 2D and 3D cases, <code>interpolation</code> parameter is 2 or 3-element tuple, e.g. 
+<code>(2,2)</code> <code>(3,2,2)</code> , <code>(3,0,0)</code>, ...</li>
+</ul>
+<p>Set  bin content</p>
+<pre><code class="lang-python">histo[<span class="hljs-number">1</span>] = VE(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>)
+histo[<span class="hljs-number">2</span>] = VE(<span class="hljs-number">20</span>,<span class="hljs-number">20</span>)
+</code></pre>
+<p>Loops over the histogram content:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> histo : 
+    <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Bin# %s, the content%s&apos;</span> % ( i, histo[i] ) 
+<span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> histo.iteritems() : 
+    <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;item  &apos;</span>, entry
+</code></pre>
+<h2 id="histogram-slicing">Histogram slicing</h2>
+<p>The slicing of 1D-historgam can be done easily using native <code>slice</code> in python</p>
+<pre><code class="lang-python">h1 = h[<span class="hljs-number">3</span>:<span class="hljs-number">8</span>]
+</code></pre>
+<p>For 2D and 3D-casss the slicing is less trivial, but still simple </p>
+<pre><code class="lang-python">histo2D = ...
+h1 = histo2D.sliceX ( <span class="hljs-number">1</span> ) 
+h2 = histo2D.sliceY ( [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>] ) 
+h3 = histo2D.sliceY ( <span class="hljs-number">3</span> ) 
+h4 = histo2D.sliceY ( [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>] )
+</code></pre>
+<h2 id="operators-and-operations"><em>Operators and operations</em></h2>
+<p>A lot of operators and operations are defined for histograms.</p>
+<pre><code class="lang-python">histo += <span class="hljs-number">1</span> 
+histo /= <span class="hljs-number">10</span> 
+histo  = <span class="hljs-number">1</span>     + histo      <span class="hljs-comment">## operations with constants    </span>
+histo  = histo + math.cos   <span class="hljs-comment">## operations with functions </span>
+histo /= <span class="hljs-keyword">lambda</span> x : <span class="hljs-number">1</span> + x   <span class="hljs-comment">## lambdas are also functions</span>
+</code></pre>
+<p>Also binary operations are defined </p>
+<pre><code class="lang-python">h1 = ...
+h2 = ...
+h3 = h1 + h2 
+h4 = h1 / h2 
+h5 = h1 * h2 
+h6 = h1 - h2
+</code></pre>
+<p>For the binary operations the action is defiened accordinh to the rule</p>
+<ul>
+<li>the type of the result is defined by the first operand (type, and binning) </li>
+<li>for each bin <code>i</code> the result is estimated as <code>a oper b</code>, where:<ul>
+<li><code>oper</code> stands for corresponding operator (<code>+,-,*,/,**)</code></li>
+<li><code>a = h1[i]</code> is a value of the first operand at bin <code>i</code></li>
+<li><code>b = h2(x)</code>, where <code>x</code> is a bin-center of bin<code>i</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="more-operations"><em>More operations</em></h3>
+<p>There are many other useful opetations:</p>
+<ul>
+<li><code>abs</code> :  apply <code>abs</code> function bin-by-bin </li>
+<li><code>asym</code> : equivalent to <code>(h1-h2)/(h1+h2)</code> with correct treatment of correlated uncertainties </li>
+<li><code>frac</code> : equivalent to <code>(h1)/(h1+h2)</code> with correct treatment of correlated uncertainties </li>
+<li><code>average</code> : make an average of two historgam </li>
+<li><code>chi2</code>  : bin-by-bin chi2-tension between two historgams </li>
+<li>... and many more </li>
+</ul>
+<h4 id="transformations"><em>Transformations</em></h4>
+<pre><code class="lang-python">h1 = histo.transform ( <span class="hljs-keyword">lambda</span> x,y : y    ) <span class="hljs-comment">## identical transformation (copy) </span>
+h2 = histo.transform ( <span class="hljs-keyword">lambda</span> x,y : y**<span class="hljs-number">3</span> ) <span class="hljs-comment">## get the third power of the histogram content </span>
+h3 = histo.transform ( <span class="hljs-keyword">lambda</span> x,y : y/x  ) <span class="hljs-comment">## less trivial functional transformation</span>
+</code></pre>
+<h4 id="efficiencies"><em>Efficiencies</em></h4>
+<p>There are several special cases to get the efficiency-historgams </p>
+<pre><code class="lang-python">accepted = ... <span class="hljs-comment">## historgam with accepted sample </span>
+rejected = ... <span class="hljs-comment">## historgam with rejected sample </span>
+total    = ... <span class="hljs-comment">## historgam with total sample </span>
+
+eff1 = accepted/total          <span class="hljs-comment">## value is correct, uncertainties are *NOT* correct </span>
+eff2 = <span class="hljs-number">1</span>/(<span class="hljs-number">1</span>+rejected/accepted) <span class="hljs-comment">## everything is correct (binomial) </span>
+eff3 = accepted %  total       <span class="hljs-comment">## everything is correct (binomial)</span>
+eff4 = accepted // total       <span class="hljs-comment">## correct binomial, if both histograms are &quot;natural&quot;</span>
+</code></pre>
+<h4 id="math-functions"><em>Math functions</em></h4>
+<p>The standard math-functions can be applied to the histoigram (bin-by-bin):</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> LHCbMath.math_ve <span class="hljs-keyword">import</span> *
+h1 = sin ( histo ) 
+h2 = exp ( histo ) 
+h3 = exp ( abs ( histo ) ) 
+...
+</code></pre>
+<h4 id="sampling"><em>Sampling</em></h4>
+<p>There is an easy way to sample the histograms according to their content, e.g. for toy-experiments:</p>
+<pre><code class="lang-python">h1 = histo.sample() <span class="hljs-comment">## make a random histogram with content sampled according to bin+-error in original histo</span>
+h2 = histo.sample( accept = <span class="hljs-keyword">lambda</span> s : s &gt; <span class="hljs-number">0</span> ) <span class="hljs-comment">##sample but require that sampled values are positive</span>
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="VE.html" class="navigation navigation-prev " aria-label="Previous page: Values with uncertainties">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../CONTRIBUTING.html" class="navigation navigation-next " aria-label="Next page: Contributing">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Simple optations with histograms","level":"2.1.2","depth":2,"next":{"title":"Contributing","level":"3.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/Histos.md","mtime":"2018-03-06T15:47:09.089Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-06T15:49:31.267Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-panels/panels.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-katex-auto-render/katex.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-katex-auto-render/auto-render.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-katex-auto-render/enable-auto-render.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-otherlink/js/otherlink.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

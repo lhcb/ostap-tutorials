@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Getting started · GitBook</title>
+        <title>Values with uncertainties · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="VE.html" />
+    <link rel="next" href="Histos.html" />
     
     
-    <link rel="prev" href="../" />
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -117,7 +117,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="./">
+        <li class="chapter " data-level="2.1" data-path="./">
             
                 <a href="./">
             
@@ -131,7 +131,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="VE.html">
+        <li class="chapter active" data-level="2.1.1" data-path="VE.html">
             
                 <a href="VE.html">
             
@@ -245,7 +245,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Getting started</a>
+        <a href=".." >Values with uncertainties</a>
     </h1>
 </div>
 
@@ -260,26 +260,40 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="getting-started">Getting started</h1>
-<p>The main ingredients of <code>Ostap</code> are</p>
-<ul>
-<li>preconfigured ipython script <code>ostap</code>, that can be invoked from the command line.<pre><code class="lang-bash">ostap
+                                <h1 id="values-with-uncertanties-valuewitherror">Values with uncertanties: <code>ValueWithError</code></h1>
+<p>One of the central object in <code>ostap</code> is C++ class <code>Gaudi::Math::ValutWithError</code>, accessible in python via shortcut <code>VE</code>. This class stands fot r a combination of the value with uncertainties:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.Core <span class="hljs-keyword">import</span> VE
+a = VE( <span class="hljs-number">10</span> , <span class="hljs-number">10</span> ) <span class="hljs-comment">## the value &amp; squared uncertainty - &apos;variance&apos; </span>
+b = VE( <span class="hljs-number">20</span> , <span class="hljs-number">20</span> ) <span class="hljs-comment">## the value &amp; squared uncertainty - &apos;variance&apos; </span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;a=%s&quot;</span> % a 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;b=%s&quot;</span> % b 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Value    of a is %s&apos;</span>  % a.value() 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Effor    of b is %s&apos;</span>  % b.error() 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Variance of b is %s&apos;</span>  % b.cov2 ()
 </code></pre>
-<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(8850734538);" id="challenge"><i class="fa fa-square-o"></i> Challenge<span id="heading-8850734538"></span></h3></div><div class="panel-body" id="panel-8850734538"><p>Invoke the script with <code>-h</code> option to get the whole list of all command line options and keys </p>
+<p>A lot of math operations are predefined for <code>VE</code>-objects.
+<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(6050728912);" id="challenge"><i class="fa fa-square-o"></i> Challenge<span id="heading-6050728912"></span></h3></div><div class="panel-body" id="panel-6050728912"><p>Make a try with all binary  operations (<code>+,-,*,/,**</code>) for the pair 
+of <code>VE</code> objects and combinations of <code>VE</code>-objects with numbers, e.g. </p>
+<pre><code class="lang-python">a + b 
+a + <span class="hljs-number">1</span> 
+<span class="hljs-number">1</span> - b
+<span class="hljs-number">2</span> ** a 
+a +=<span class="hljs-number">1</span>   
+b += a  
+</code></pre>
+<p>Compare the difference for following expresssions: </p>
+<pre><code class="lang-python">a/a      <span class="hljs-comment">## &lt;--- HERE </span>
+a/VE(a)  <span class="hljs-comment">## &lt;--- HERE</span>
+a-a      <span class="hljs-comment">## &lt;--- HERE </span>
+a-VE(a)  <span class="hljs-comment">## &lt;--- HERE</span>
+</code></pre>
+<p>Note that for trivial cases the correlations are propertly taken into account     </p>
 </div></div>
-Optionally one can specify the list of python files to be executed before appearance of the interactive command prompt:<pre><code class="lang-bash">ostap a.py b.py c.py d.py
+Additionally many math-functions are provided, carefully takes care on uncertainties</p>
+<pre><code>from LHCbMath.math_ve import * 
+sin(a)+cos(b)/tanh(b) 
+atan2(a,b)/log(a)
 </code></pre>
-The list of optional arguments can include also root-files, in this case the files will be opened and their handlers will 
-be available via local list <code>root_files</code><pre><code class="lang-bash">ostap a.py b.py c.py d.py file1.root file2.root e.py file3.root
-</code></pre>
-Also <code>ROOT</code> macros can be specified on the command line <pre><code class="lang-bash">ostap a.py b.py c.py d.py file1.root q1.C file2.root q2.C e.py file3.root q4.C
-</code></pre>
-</li>
-</ul>
-<p>The script automatically opens <code>TCanvas</code> window (unless <code>--no-canvas</code> option is specified) 
-with (a little bit modified) LHCb style. It also loads necessary decorators for <code>ROOT</code> classes. 
-At last it executes the python scripts and opens root-files, specified as command line arguments.</p>
-
                                 
                                 </section>
                             
@@ -306,12 +320,12 @@ At last it executes the python scripts and opens root-files, specified as comman
 
             
                 
-                <a href="../" class="navigation navigation-prev " aria-label="Previous page: The Ostap tutorials">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Getting started">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="VE.html" class="navigation navigation-next " aria-label="Next page: Values with uncertainties">
+                <a href="Histos.html" class="navigation navigation-next " aria-label="Next page: Simple optations with histograms">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -322,7 +336,7 @@ At last it executes the python scripts and opens root-files, specified as comman
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Getting started","level":"2.1","depth":1,"next":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"previous":{"title":"The Ostap tutorials","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/README.md","mtime":"2018-03-06T15:47:09.089Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-06T15:49:31.267Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"next":{"title":"Simple optations with histograms","level":"2.1.2","depth":2,"path":"getting-started/Histos.md","ref":"getting-started/Histos.md","articles":[]},"previous":{"title":"Getting started","level":"2.1","depth":1,"path":"getting-started/README.md","ref":"getting-started/README.md","articles":[{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},{"title":"Simple optations with histograms","level":"2.1.2","depth":2,"path":"getting-started/Histos.md","ref":"getting-started/Histos.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/VE.md","mtime":"2018-03-06T15:47:09.089Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-06T15:49:31.267Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
