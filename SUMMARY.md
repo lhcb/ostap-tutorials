@@ -5,6 +5,8 @@
 ----
 
 * [Getting started](getting-started/README.md)
+   * [Values with uncertainties](getting-started/VE.md)
+   * [Simple optations with histograms](getting-started/Histos.md)
 
 ----
 
