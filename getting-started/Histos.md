@@ -134,6 +134,7 @@ There is an easy way to sample the histograms according to their content, e.g. f
 ```python
 h1 = histo.sample() ## make a random histogram with content sampled according to bin+-error in original histo
 h2 = histo.sample( accept = lambda s : s > 0 ) ##sample but require that sampled values are positive 
+```
 
 #### Smearing/convolution with gaussian
 It is very easy to smear 1D histogram according to gaussian resolution 
