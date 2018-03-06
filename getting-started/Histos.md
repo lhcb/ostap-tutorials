@@ -107,6 +107,17 @@ eff3 = accepted %  total       ## everything is correct (binomial)
 eff4 = accepted // total       ## correct binomial, if both histograms are "natural"
 ```
 
+#### _Running sums and the efficiencies of cuts_ 
+```python
+h1 = histo.sumv ()        ## increasing order: sum(first,x) 
+h2 = histo.sumv ( False ) ## decreasing order: sum(x,last ) 
+```
+Such functionality immediately allows to calculate efficiency historgrams using `effic` method:
+```python
+h1 = histo.effic ()        ## efficiency of var<x cut 
+h2 = histo.effic ( False ) ## efficiency of var>x cut 
+```
+
 ####  _Math functions_
 
 The standard math-functions can be applied to the histoigram (bin-by-bin):
@@ -117,9 +128,23 @@ h2 = exp ( histo )
 h3 = exp ( abs ( histo ) ) 
 ...
 ```
+
 ####  _Sampling_
 There is an easy way to sample the histograms according to their content, e.g. for toy-experiments:
 ```python
 h1 = histo.sample() ## make a random histogram with content sampled according to bin+-error in original histo
 h2 = histo.sample( accept = lambda s : s > 0 ) ##sample but require that sampled values are positive 
+
+#### Smearing/convolution with gaussian
+It is very easy to smear 1D histogram according to gaussian resolution 
+```python
+h1 = histo.smear ( 0.015 ) ## apply "smearing" with sigma = 0.015 
 ```
+
+#### Rebin 
+```python
+original = ... ## the original historgam to be rebinned 
+template = ... ## historgams that deifned new binning  scheme  
+rebin1   = original.rebinNumbers  ( template ) ## compare it!  
+rebin2   = original.rebinFunction ( template ) ## compare it!
+````
