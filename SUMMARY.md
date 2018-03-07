@@ -12,6 +12,7 @@
 ----
 
 * [Using RooFit](fitting/README.md)
+   * [Models](fitting/models.md)
 
 ----
 
