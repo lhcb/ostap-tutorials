@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Getting started · GitBook</title>
+        <title>Models · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="VE.html" />
+    <link rel="next" href="../CONTRIBUTING.html" />
     
     
-    <link rel="prev" href="../" />
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -117,9 +117,9 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="./">
+        <li class="chapter " data-level="2.1" data-path="../getting-started/">
             
-                <a href="./">
+                <a href="../getting-started/">
             
                     
                     Getting started
@@ -131,9 +131,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="VE.html">
+        <li class="chapter " data-level="2.1.1" data-path="../getting-started/VE.html">
             
-                <a href="VE.html">
+                <a href="../getting-started/VE.html">
             
                     
                     Values with uncertainties
@@ -144,9 +144,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.2" data-path="Histos.html">
+        <li class="chapter " data-level="2.1.2" data-path="../getting-started/Histos.html">
             
-                <a href="Histos.html">
+                <a href="../getting-started/Histos.html">
             
                     
                     Simple operations with histograms
@@ -157,9 +157,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3" data-path="Histos.html">
+        <li class="chapter " data-level="2.1.3" data-path="../getting-started/Histos.html">
             
-                <a href="Histos.html">
+                <a href="../getting-started/Histos.html">
             
                     
                     Simple operations with trees
@@ -182,9 +182,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="../fitting/">
+        <li class="chapter " data-level="3.1" data-path="./">
             
-                <a href="../fitting/">
+                <a href="./">
             
                     
                     Using RooFit
@@ -196,9 +196,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.1.1" data-path="../fitting/models.html">
+        <li class="chapter active" data-level="3.1.1" data-path="models.html">
             
-                <a href="../fitting/models.html">
+                <a href="models.html">
             
                     
                     Models
@@ -234,9 +234,9 @@
             
         </li>
     
-        <li class="chapter " data-level="4.2" data-path="formatting-examples.html">
+        <li class="chapter " data-level="4.2" data-path="../getting-started/formatting-examples.html">
             
-                <a href="formatting-examples.html">
+                <a href="../getting-started/formatting-examples.html">
             
                     
                     Examples of formatting
@@ -297,7 +297,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Getting started</a>
+        <a href=".." >Models</a>
     </h1>
 </div>
 
@@ -312,26 +312,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="getting-started">Getting started</h1>
-<p>The main ingredients of <code>Ostap</code> are</p>
-<ul>
-<li>preconfigured ipython script <code>ostap</code>, that can be invoked from the command line.<pre><code class="lang-bash">ostap
-</code></pre>
-<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(8557537278);" id="challenge"><i class="fa fa-square-o"></i> Challenge<span id="heading-8557537278"></span></h3></div><div class="panel-body" id="panel-8557537278"><p>Invoke the script with <code>-h</code> option to get the whole list of all command line options and keys </p>
-</div></div>
-Optionally one can specify the list of python files to be executed before appearance of the interactive command prompt:<pre><code class="lang-bash">ostap a.py b.py c.py d.py
-</code></pre>
-The list of optional arguments can include also root-files, in this case the files will be opened and their handlers will 
-be available via local list <code>root_files</code><pre><code class="lang-bash">ostap a.py b.py c.py d.py file1.root file2.root e.py file3.root
-</code></pre>
-Also <code>ROOT</code> macros can be specified on the command line <pre><code class="lang-bash">ostap a.py b.py c.py d.py file1.root q1.C file2.root q2.C e.py file3.root q4.C
-</code></pre>
-</li>
-</ul>
-<p>The script automatically opens <code>TCanvas</code> window (unless <code>--no-canvas</code> option is specified) 
-with (a little bit modified) LHCb style. It also loads necessary decorators for <code>ROOT</code> classes. 
-At last it executes the python scripts and opens root-files, specified as command line arguments.</p>
-
+                                
                                 
                                 </section>
                             
@@ -358,12 +339,12 @@ At last it executes the python scripts and opens root-files, specified as comman
 
             
                 
-                <a href="../" class="navigation navigation-prev " aria-label="Previous page: The Ostap tutorials">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Using RooFit">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="VE.html" class="navigation navigation-next " aria-label="Next page: Values with uncertainties">
+                <a href="../CONTRIBUTING.html" class="navigation navigation-next " aria-label="Next page: Contributing">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -374,7 +355,7 @@ At last it executes the python scripts and opens root-files, specified as comman
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Getting started","level":"2.1","depth":1,"next":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"previous":{"title":"The Ostap tutorials","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/README.md","mtime":"2018-03-07T12:46:20.785Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-07T12:48:37.746Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Models","level":"3.1.1","depth":2,"next":{"title":"Contributing","level":"4.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Using RooFit","level":"3.1","depth":1,"path":"fitting/README.md","ref":"fitting/README.md","articles":[{"title":"Models","level":"3.1.1","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]}]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/models.md","mtime":"2018-03-07T12:46:20.785Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-07T12:48:37.746Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
