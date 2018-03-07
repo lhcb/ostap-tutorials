@@ -325,7 +325,66 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="persistency">Persistency</h1>
+<h2 id="ostapzipshelve"><code>Ostap.ZipShelve</code></h2>
+<p>Ostap offers very nice&amp;efficient way to store the objects in persistent dbase.
+This persistency is build around <a href="https://docs.python.org/2/library/shelve.html" target="_blank"><code>shelve</code> module</a> and differs in three way</p>
+<ol>
+<li>the conntent of payload is compressed, using <a href="https://docs.python.org/2/library/zlib.html" target="_blank"><code>zlib</code> module</a> making the data base very compact </li>
+<li>(optionally) the whole database can ve further  <code>gzip</code>&apos;ed using <a href="https://docs.python.org/2/library/gzip.html" target="_blank"><code>gzip</code> module</a>, if the extension <code>.gz</code> is provided. It makes data banse even more compact.</li>
+<li>in addition to the native <code>dict</code> interface from <code>shelve</code>, more extensiveinterface with more methods is supported. </li>
+</ol>
+<p>Create database and write objects to it: </p>
+<pre><code class="lang-python">a = ...
+<span class="hljs-keyword">import</span> Ostap.ZipShelve <span class="hljs-keyword">as</span> DBASE 
+<span class="hljs-keyword">with</span> DBASE.open ( <span class="hljs-string">&apos;my_dbase.db&apos;</span> ) <span class="hljs-keyword">as</span> db : <span class="hljs-comment">## create DBASE </span>
+  db.ls() 
+  db[<span class="hljs-string">&apos;a&apos;</span>] =  a
+  db[<span class="hljs-string">&apos;histo&apos;</span>] = ROOT.TH1D(<span class="hljs-string">&apos;h1&apos;</span>,<span class="hljs-string">&apos;&apos;</span>,<span class="hljs-number">10</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)
+</code></pre>
+<p>Reading objects from database </p>
+<pre><code class="lang-python"><span class="hljs-keyword">with</span> DBASE.open ( <span class="hljs-string">&apos;my_dbase.db&apos;</span> , <span class="hljs-string">&apos;read&apos;</span>) <span class="hljs-keyword">as</span> db : <span class="hljs-comment">## read DBASE </span>
+  db.ls() 
+  b  = db[<span class="hljs-string">&apos;a&apos;</span>] 
+  h2 = db[<span class="hljs-string">&apos;histo&apos;</span>]
+</code></pre>
+<p>One can store in database all <em>pickable</em> objects, that means all python objects, all (serializeable) <code>ROOT</code> objects. All <code>C++</code> objects  with <code>LCG/Reflex/Cint</code>-dictionaries are also could be stored database. In practice, everything is storable, including complex combination of python&amp;C++ objects, like dictionary of historgams and python classed, inherited from <code>C++</code>-base classes.   </p>
+<h2 id="plain-roottfile">Plain <code>ROOT.TFile</code></h2>
+<p>Ostap adds some  decorations even for the plain <code>ROOT.TFile</code>, making its interface more <em>pythonic</em>:</p>
+<pre><code class="lang-python">rfile = ...
+obj   = rfile[<span class="hljs-string">&apos;A/B/C/myobj&apos;</span>]     <span class="hljs-comment">## READ  object form the file/directory</span>
+rfile[<span class="hljs-string">&apos;A/B/C/myobj2&apos;</span>] = object2  <span class="hljs-comment">## WRITE object to the file/directory </span>
+obj  = rfile.A.B.C.myobj              <span class="hljs-comment">## another way to access to the object</span>
+obj  = rfile.get ( <span class="hljs-string">&apos;A/B/C/q&apos;</span> , <span class="hljs-keyword">None</span> ) <span class="hljs-comment">## one more way to get object </span>
+<span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> rfile : <span class="hljs-keyword">print</span> obj          <span class="hljs-comment">## loop over all objects in file</span>
+<span class="hljs-keyword">for</span> key,obj <span class="hljs-keyword">in</span> rfile.iteritems() : <span class="hljs-keyword">print</span> key, obj             <span class="hljs-comment">## another loop</span>
+<span class="hljs-keyword">for</span> key,obj <span class="hljs-keyword">in</span> rfile.iteritems( ROOT.TH1 ) : <span class="hljs-keyword">print</span> key, obj   <span class="hljs-comment">## advanced loop, get only histograms </span>
+<span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> rfile.keys()     : <span class="hljs-keyword">print</span> k   <span class="hljs-comment">## get all keys and loop over them </span>
+<span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> rfile.iterkeys() : <span class="hljs-keyword">print</span> k   <span class="hljs-comment">## loop over all keys in the file</span>
+<span class="hljs-keyword">del</span> rfile[<span class="hljs-string">&apos;A/B&apos;</span>]                      <span class="hljs-comment">## delete the object from the file</span>
+rfile.rm ( <span class="hljs-string">&apos;A/B&apos;</span> )                    <span class="hljs-comment">## delete the object from the file</span>
+<span class="hljs-keyword">if</span> <span class="hljs-string">&apos;A/MyHisto&apos;</span> <span class="hljs-keyword">in</span> rfile          : <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;OK!&apos;</span> <span class="hljs-comment">## check presence of the key</span>
+<span class="hljs-keyword">if</span> rfile.has_key ( <span class="hljs-string">&apos;A/MyHisto&apos;</span> ) : <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;OK!&apos;</span> <span class="hljs-comment">## check presence of the key</span>
+<span class="hljs-keyword">with</span> ROOT.TFile(<span class="hljs-string">&apos;aa.root&apos;</span>) <span class="hljs-keyword">as</span> rfile : rfile.ls() <span class="hljs-comment">## context manager protocol</span>
+</code></pre>
+<h2 id="rootonlyshelve"><code>RootOnlyShelve</code></h2>
+<p>The module <code>Ostap.RootShelve</code> offers the thin wrapper over <code>ROOT.TFile</code> that implement <code>shelve</code>-interface. As a resutl one gets a ligth database build a top of underlying <code>ROOT.TFile</code>, where <code>ROOT</code>-objects could be stored: </p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.RootShelve <span class="hljs-keyword">import</span> RooOnlyShelf
+db = RooOnlyShelf(<span class="hljs-string">&apos;mydb.root&apos;</span>,<span class="hljs-string">&apos;c&apos;</span>)
+h1 = ...
+db [<span class="hljs-string">&apos;histogram&apos;</span>] = h1
+db.ls()
+</code></pre>
+<h2 id="rootshelve"><code>RootShelve</code></h2>
+<p>The module <code>Ostap.RootShelve</code> offers also more  sophisticated wrapper over <code>ROOT.TFile</code> that also implements <code>shelve</code>-interface and able to store ROOT and any other <em>pickable</em> objects </p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.RootShelve <span class="hljs-keyword">import</span> RooShelf
+db = RooShelf(<span class="hljs-string">&apos;mydb.root&apos;</span>,<span class="hljs-string">&apos;c&apos;</span>)
+h1 = ...
+db [<span class="hljs-string">&apos;histogram&apos;</span>] = h1
+db [<span class="hljs-string">&apos;histogramlist&apos;</span>] = h1,h2,h3
+db.ls()
+</code></pre>
+
                                 
                                 </section>
                             
@@ -368,7 +427,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Persistency","level":"2.1.4","depth":2,"next":{"title":"Using RooFit","level":"3.1","depth":1,"path":"fitting/README.md","ref":"fitting/README.md","articles":[{"title":"Models","level":"3.1.1","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]}]},"previous":{"title":"Simple operations with trees","level":"2.1.3","depth":2,"path":"getting-started/Trees.md","ref":"getting-started/Trees.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/DBASE.md","mtime":"2018-03-07T16:01:57.580Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-07T16:03:55.358Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Persistency","level":"2.1.4","depth":2,"next":{"title":"Using RooFit","level":"3.1","depth":1,"path":"fitting/README.md","ref":"fitting/README.md","articles":[{"title":"Models","level":"3.1.1","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]}]},"previous":{"title":"Simple operations with trees","level":"2.1.3","depth":2,"path":"getting-started/Trees.md","ref":"getting-started/Trees.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/DBASE.md","mtime":"2018-03-07T16:32:24.316Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-07T16:34:45.120Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
