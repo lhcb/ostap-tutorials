@@ -6,7 +6,12 @@
 
 * [Getting started](getting-started/README.md)
    * [Values with uncertainties](getting-started/VE.md)
-   * [Simple optations with histograms](getting-started/Histos.md)
+   * [Simple operations with histograms](getting-started/Histos.md)
+   * [Simple operations with trees](getting-started/Histos.md)
+
+----
+
+* [Using RooFit](fitting/README.md)
 
 ----
 
