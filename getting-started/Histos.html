@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Simple optations with histograms · GitBook</title>
+        <title>Simple operations with histograms · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,7 +65,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../CONTRIBUTING.html" />
+    <link rel="next" href="Histos.html" />
     
     
     <link rel="prev" href="VE.html" />
@@ -149,7 +149,20 @@
                 <a href="Histos.html">
             
                     
-                    Simple optations with histograms
+                    Simple operations with histograms
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.1.3" data-path="Histos.html">
+            
+                <a href="Histos.html">
+            
+                    
+                    Simple operations with trees
             
                 </a>
             
@@ -169,7 +182,27 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="../CONTRIBUTING.html">
+        <li class="chapter " data-level="3.1" data-path="../fitting/">
+            
+                <a href="../fitting/">
+            
+                    
+                    Using RooFit
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../CONTRIBUTING.html">
             
                 <a href="../CONTRIBUTING.html">
             
@@ -182,7 +215,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="formatting-examples.html">
+        <li class="chapter " data-level="4.2" data-path="formatting-examples.html">
             
                 <a href="formatting-examples.html">
             
@@ -202,7 +235,7 @@
         
         
     
-        <li class="chapter " data-level="4.1" >
+        <li class="chapter " data-level="5.1" >
             
                 <a target="_blank" href="ref://ostap-tutorials.pdf">
             
@@ -245,7 +278,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Simple optations with histograms</a>
+        <a href=".." >Simple operations with histograms</a>
     </h1>
 </div>
 
@@ -286,6 +319,10 @@ histo[<span class="hljs-number">2</span>] = VE(<span class="hljs-number">20</spa
     <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Bin# %s, the content%s&apos;</span> % ( i, histo[i] ) 
 <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> histo.iteritems() : 
     <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;item  &apos;</span>, entry
+</code></pre>
+<p>The <em>reversed</em> iterations are also  supported</p>
+<pre><code class="lang-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> reversed(histo) : 
+    <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Bin# %s, the content%s&apos;</span> % ( i, histo[i] )
 </code></pre>
 <h2 id="histogram-slicing">Histogram slicing</h2>
 <p>The slicing of 1D-historgam can be done easily using native <code>slice</code> in python</p>
@@ -334,12 +371,132 @@ h6 = h1 - h2
 <li><code>chi2</code>  : bin-by-bin chi2-tension between two historgams </li>
 <li>... and many more </li>
 </ul>
-<h4 id="transformations"><em>Transformations</em></h4>
+<h3 id="transformations"><em>Transformations</em></h3>
 <pre><code class="lang-python">h1 = histo.transform ( <span class="hljs-keyword">lambda</span> x,y : y    ) <span class="hljs-comment">## identical transformation (copy) </span>
 h2 = histo.transform ( <span class="hljs-keyword">lambda</span> x,y : y**<span class="hljs-number">3</span> ) <span class="hljs-comment">## get the third power of the histogram content </span>
 h3 = histo.transform ( <span class="hljs-keyword">lambda</span> x,y : y/x  ) <span class="hljs-comment">## less trivial functional transformation</span>
 </code></pre>
-<h4 id="efficiencies"><em>Efficiencies</em></h4>
+<h3 id="math-functions"><em>Math functions</em></h3>
+<p>The standard math-functions can be applied to the histoigram (bin-by-bin):</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> LHCbMath.math_ve <span class="hljs-keyword">import</span> *
+h1 = sin ( histo ) 
+h2 = exp ( histo ) 
+h3 = exp ( abs ( histo ) ) 
+...
+</code></pre>
+<h3 id="sampling"><em>Sampling</em></h3>
+<p>There is an easy way to sample the histograms according to their content, e.g. for toy-experiments:</p>
+<pre><code class="lang-python">h1 = histo.sample() <span class="hljs-comment">## make a random histogram with content sampled according to bin+-error in original histo</span>
+h2 = histo.sample( accept = <span class="hljs-keyword">lambda</span> s : s &gt; <span class="hljs-number">0</span> ) <span class="hljs-comment">##sample but require that sampled values are positive</span>
+</code></pre>
+<h3 id="smearingconvolution-with-gaussian">Smearing/convolution with gaussian</h3>
+<p>It is very easy to smear 1D histogram according to gaussian resolution </p>
+<pre><code class="lang-python">h1 = histo.smear ( <span class="hljs-number">0.015</span> ) <span class="hljs-comment">## apply &quot;smearing&quot; with sigma = 0.015 </span>
+h2 = histo.smear ( sigma = <span class="hljs-keyword">lambda</span> x :  <span class="hljs-number">0.1</span>*x ) <span class="hljs-comment">## smear using &apos;running&apos; sigma of 10% resolution</span>
+</code></pre>
+<h3 id="rebin">Rebin</h3>
+<pre><code class="lang-python">original = ... <span class="hljs-comment">## the original historgam to be rebinned </span>
+template = ... <span class="hljs-comment">## historgams that deifned new binning  scheme  </span>
+rebin1   = original.rebinNumbers  ( template ) <span class="hljs-comment">## compare it!  </span>
+rebin2   = original.rebinFunction ( template ) <span class="hljs-comment">## compare it!</span>
+`
+</code></pre>
+<p>Note that  there are <em>two</em> methods for rebin 
+<code>rebinNumbers</code> and <code>rebinFunction</code> -  they depends on the treatment of the histogram.
+<div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(3454551188);" id="challenge"><i class="fa fa-square-o"></i> Challenge<span id="heading-3454551188"></span></h3></div><div class="panel-body" id="panel-3454551188"><p>Choose some initial histogram with non-uniform biuning, choose <em>template</em> historam  with non-uniform binning
+and compare two methods: <code>rebinNumbers</code> and <code>rebinFunction</code>. </p>
+</div></div></p>
+<h3 id="integrals"><em>Integrals</em></h3>
+<p>There are several<em>integral</em>-like methods for (1D)histograms </p>
+<ul>
+<li><code>accumulate</code> : useful for <em>numbers</em>-like histograms, only bin-content inn used for summation (unless the bin is effectively split in case of low/high summation edge does not coinside with bin edges)<pre><code class="lang-python">s = histo.accumulate ()
+s = histo.accumulate ( cut = <span class="hljs-keyword">lambda</span> s :  <span class="hljs-number">0.4</span>&lt;=s[<span class="hljs-number">1</span>].value()&lt;<span class="hljs-number">0.5</span> ) 
+s = histo.accumulate ( low  = <span class="hljs-number">1</span>    , high = <span class="hljs-number">14</span> ) <span class="hljs-comment">## accumulate over    1&lt;= ibin &lt;14</span>
+s = histo.accumulate ( xmin = <span class="hljs-number">0.14</span> , xmax = <span class="hljs-number">14</span> ) <span class="hljs-comment">## accumulate over xmin&lt;= x    &lt;xmax</span>
+</code></pre>
+</li>
+<li><code>integrate</code> : useful for <em>function</em>-like histograms, perform integration taking into account bin-width.<pre><code class="lang-python">s = histo.integrate ()
+s = histo.integrate ( cut  = <span class="hljs-keyword">lambda</span> s :  <span class="hljs-number">0.4</span>&lt;=s[<span class="hljs-number">1</span>].value()&lt;<span class="hljs-number">0.5</span> ) 
+s = histo.integrate ( lowx = <span class="hljs-number">1</span>    , highx = <span class="hljs-number">14</span>   ) <span class="hljs-comment">## integrate over    1&lt;= xbin &lt;14</span>
+s = histo.integrate ( xmin = <span class="hljs-number">0.14</span> , xmax  = <span class="hljs-number">21.1</span> ) <span class="hljs-comment">## integrate over xmin&lt;= x    &lt;xmax</span>
+</code></pre>
+</li>
+<li><code>integral</code> it transform the histogram into <code>ROOT.TF1</code> object and invokes <code>ROOT.TF1.Integral</code></li>
+</ul>
+<h3 id="running-sums"><em>Running sums</em></h3>
+<p> and the efficiencies of cuts_ </p>
+<pre><code class="lang-python">h1 = histo.sumv ()        <span class="hljs-comment">## increasing order: sum(first,x) </span>
+h2 = histo.sumv ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## decreasing order: sum(x,last )</span>
+</code></pre>
+<h4 id="efficiency-of-the-cut"><em>Efficiency of the cut</em></h4>
+<p>Such functionality immediately allows to calculate efficiency historgrams using <code>effic</code> method:</p>
+<pre><code class="lang-python">h1 = histo.effic ()        <span class="hljs-comment">## efficiency of var&lt;x cut </span>
+h2 = histo.effic ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## efficiency of var&gt;x cut</span>
+</code></pre>
+<h3 id="conversion-to-roottf123"><em>Conversion to <code>ROOT.TF(1,2,3)</code></em></h3>
+<h3 id="scaling"><em>Scaling</em></h3>
+<p>In additon to <em>trivial</em> scaling operations <code>h *= 3</code> and <code>h /= 10</code> there are seevral dedicated methdo for scaling</p>
+<ul>
+<li><code>scale</code> it scales the historgam content to a given sum of <em>in-range</em> bins <pre><code class="lang-python"><span class="hljs-keyword">print</span> histo.accumulate()
+histo.scale(<span class="hljs-number">10</span>)
+<span class="hljs-keyword">print</span> histo.accumulate()
+</code></pre>
+<ul>
+<li><code>rescale_bins</code> : it allows the treatment of non-uniform histograms as density distributions. Essentially each bin <code>i</code> is rescaled 
+according to  the rule <code>h[i] *= a / S</code> , where <code>a</code> is specified factor and <code>S</code> is <em>bin-area</em>. such type of rescaling is important for historgams 
+with non-uniform binning </li>
+</ul>
+</li>
+</ul>
+<h4 id="density"><em>Density</em></h4>
+<p>There is method <code>density</code> that  converts the histgram into <em>density</em> histogram. The  density histogram (being interpreted as <em>function</em>) has unit integral. It is different  from the simple rescaling for historgams with non-uniform bins.  </p>
+<pre><code class="lang-python">d = histo.density()
+</code></pre>
+<h3 id="statistics"><em>Statistics</em></h3>
+<p>There are many <em>statistic</em> functions </p>
+<ul>
+<li><code>mean</code></li>
+<li><code>rms</code></li>
+<li><code>kurtosis</code></li>
+<li><code>skewness</code></li>
+<li><code>moment</code></li>
+<li><code>centralMoment</code></li>
+<li><code>nEff</code> : number of equivalent entries</li>
+<li><code>stat</code> : statistical information about bin-to-bin content: mean, rms, minmax, ... in form of <code>Gaudi::Math::StatEntity</code> class</li>
+</ul>
+<h3 id="figure-of-merit-evaluation-and-cut-optimisation"><em>Figure-of-Merit evaluation and cut optimisation</em></h3>
+<p>If <em>figure-of-merit</em> is natural and equals to <em>sigma(S)/S</em> (note that it is equal to <em>sqrt(S+B)/S</em>):</p>
+<pre><code class="lang-python">signal = ...  <span class="hljs-comment">## distribition for signal</span>
+fom1   = signal.FoM2 () <span class="hljs-comment">## FoM for var&lt;x cut </span>
+fom2   = signal.FoM2 ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## FoM for var&gt;x cut</span>
+</code></pre>
+<p>Note that no explicit knowledge of background is needed here - it enters indireclty via the uncertainties in signal determination.</p>
+<p>If <em>figure-of-merit</em> is defined as  <em>S/sqrt(S+alpha*B)</em> </p>
+<pre><code class="lang-python">signal = ... 
+background = ... 
+alpha = ... 
+fom1  = signal.FoM1 ( background , alpha ) <span class="hljs-comment">## FoM for var&lt;x cut </span>
+fom2  = signal.FoM1  ( background , alpha , <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## FoM for var&gt;x cut</span>
+</code></pre>
+<h3 id="solve-equations"><em>Solve equations</em></h3>
+<p>One can also <em>solve  equations</em>  <code>h(x) = v</code></p>
+<pre><code class="lang-python">value = <span class="hljs-number">3</span> 
+solutions = histo.solve ( value )
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> solutions : <span class="hljs-keyword">print</span> x
+</code></pre>
+<h3 id="conversion-to--roottf123"><em>Conversion to  `ROOT.TF(1,2,3)</em></h3>
+<p>The conversion of histogram to <code>ROOT.TF1</code> objects is straighforward </p>
+<pre><code class="lang-python">f = histo.tf1()
+</code></pre>
+<p>Optionally one can specify <code>interpolate</code> flag to define the interpolation rules.  </p>
+<p>The  obtained <code>TF1</code> object is defined with three parameters </p>
+<ol>
+<li>normalization </li>
+<li>bias</li>
+<li>scale</li>
+</ol>
+<p>It can be used e.g. for visualize interpolated historgam as function or e.g. in <code>ROOT.TH1.Fit</code> method for fitting of other historgams </p>
+<h3 id="efficiencies"><em>Efficiencies</em></h3>
 <p>There are several special cases to get the efficiency-historgams </p>
 <pre><code class="lang-python">accepted = ... <span class="hljs-comment">## historgam with accepted sample </span>
 rejected = ... <span class="hljs-comment">## historgam with rejected sample </span>
@@ -350,37 +507,35 @@ eff2 = <span class="hljs-number">1</span>/(<span class="hljs-number">1</span>+re
 eff3 = accepted %  total       <span class="hljs-comment">## everything is correct (binomial)</span>
 eff4 = accepted // total       <span class="hljs-comment">## correct binomial, if both histograms are &quot;natural&quot;</span>
 </code></pre>
-<h4 id="running-sums-and-the-efficiencies-of-cuts"><em>Running sums and the efficiencies of cuts</em></h4>
-<pre><code class="lang-python">h1 = histo.sumv ()        <span class="hljs-comment">## increasing order: sum(first,x) </span>
-h2 = histo.sumv ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## decreasing order: sum(x,last )</span>
+<h3 id="binomial-efficiencies"><em>Binomial efficiencies</em></h3>
+<p>In additon to the methods described above, few more sophisticated treatments of <em>binomial effiiciencies</em> are provided</p>
+<pre><code class="lang-python">accepted = ...
+total    = ... 
+
+eff1 = accepted.        zechEff ( total ) <span class="hljs-comment">## valid for all histograms, including sPlot-weighted </span>
+eff2 = accepted.       binomEff ( total ) <span class="hljs-comment">## only for natural histograms</span>
+eff3 = accepted.      wilsonEff ( total ) <span class="hljs-comment">## only for natural histograms </span>
+eff4 = accepted.agrestiCoullEff ( total ) <span class="hljs-comment">## only for natural histograms</span>
 </code></pre>
-<p>Such functionality immediately allows to calculate efficiency historgrams using <code>effic</code> method:</p>
-<pre><code class="lang-python">h1 = histo.effic ()        <span class="hljs-comment">## efficiency of var&lt;x cut </span>
-h2 = histo.effic ( <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## efficiency of var&gt;x cut</span>
+<p>For <em>natural</em> historgams only one can use even more <a href="https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval" target="_blank">sophisticated methods</a>, that evaluates the interval. Each method returns <em>graph</em>, and the graphs can be visuzalised for comparison: </p>
+<pre><code class="lang-python">accepted = ...
+rejected = ... 
+
+eff1 = accepted.eff_wald                    ( rejected ) 
+eff2 = accepted.eff_wilson_score            ( rejected ) 
+eff3 = accepted.eff_wilson_score_continuity ( rejected ) 
+eff4 = accepted.eff_arcsin                  ( rejected ) 
+eff5 = accepted.eff_agresti_coull           ( rejected ) 
+eff6 = accepted.eff_jeffreys                ( rejected ) 
+eff7 = accepted.eff_clopper_pearson         ( rejected )
 </code></pre>
-<h4 id="math-functions"><em>Math functions</em></h4>
-<p>The standard math-functions can be applied to the histoigram (bin-by-bin):</p>
-<pre><code class="lang-python"><span class="hljs-keyword">from</span> LHCbMath.math_ve <span class="hljs-keyword">import</span> *
-h1 = sin ( histo ) 
-h2 = exp ( histo ) 
-h3 = exp ( abs ( histo ) ) 
-...
-</code></pre>
-<h4 id="sampling"><em>Sampling</em></h4>
-<p>There is an easy way to sample the histograms according to their content, e.g. for toy-experiments:</p>
-<pre><code class="lang-python">h1 = histo.sample() <span class="hljs-comment">## make a random histogram with content sampled according to bin+-error in original histo</span>
-h2 = histo.sample( accept = <span class="hljs-keyword">lambda</span> s : s &gt; <span class="hljs-number">0</span> ) <span class="hljs-comment">##sample but require that sampled values are positive</span>
-</code></pre>
-<h4 id="smearingconvolution-with-gaussian">Smearing/convolution with gaussian</h4>
-<p>It is very easy to smear 1D histogram according to gaussian resolution </p>
-<pre><code class="lang-python">h1 = histo.smear ( <span class="hljs-number">0.015</span> ) <span class="hljs-comment">## apply &quot;smearing&quot; with sigma = 0.015</span>
-</code></pre>
-<h4 id="rebin">Rebin</h4>
-<pre><code class="lang-python">original = ... <span class="hljs-comment">## the original historgam to be rebinned </span>
-template = ... <span class="hljs-comment">## historgams that deifned new binning  scheme  </span>
-rebin1   = original.rebinNumbers  ( template ) <span class="hljs-comment">## compare it!  </span>
-rebin2   = original.rebinFunction ( template ) <span class="hljs-comment">## compare it!</span>
-`
+<p>All of this  functions have an optional argument <code>interval</code> that defines the confidence interval, 
+the default value is <code>interval=0.682689492137086</code> that corresponds to 1 sigma.  </p>
+<h3 id="optimal-binning"><em>Optimal binning?</em></h3>
+<p>It is not a rare case when one needs to find the binbing of the histogram that ensures almost equal bin populations. This task could be solved using <code>eqaul_bins</code> method </p>
+<pre><code class="lang-python">very_fine_binned_histo = ... <span class="hljs-comment">## get the fine binned histograms </span>
+edges1 = fine_binned.equal_edges ( <span class="hljs-number">10</span> ) <span class="hljs-comment">## try to fing binning with 10 almost equally populated bins </span>
+edges2 = fine_binned.equal_edges ( <span class="hljs-number">10</span> , wmax = <span class="hljs-number">5</span> ) <span class="hljs-comment">## try to fing binning with 10 almost equally populated bins, but avoid bins wider than &quot;wmax&quot;</span>
 </code></pre>
 
                                 
@@ -414,7 +569,7 @@ rebin2   = original.rebinFunction ( template ) <span class="hljs-comment">## com
                 </a>
                 
                 
-                <a href="../CONTRIBUTING.html" class="navigation navigation-next " aria-label="Next page: Contributing">
+                <a href="Histos.html" class="navigation navigation-next " aria-label="Next page: Simple operations with trees">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -425,7 +580,7 @@ rebin2   = original.rebinFunction ( template ) <span class="hljs-comment">## com
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Simple optations with histograms","level":"2.1.2","depth":2,"next":{"title":"Contributing","level":"3.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/Histos.md","mtime":"2018-03-06T15:59:50.761Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-06T16:01:56.978Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Simple operations with histograms","level":"2.1.2","depth":2,"next":{"title":"Simple operations with trees","level":"2.1.3","depth":2,"path":"getting-started/Histos.md","ref":"getting-started/Histos.md","articles":[]},"previous":{"title":"Values with uncertainties","level":"2.1.1","depth":2,"path":"getting-started/VE.md","ref":"getting-started/VE.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/Histos.md","mtime":"2018-03-07T12:45:18.920Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-07T12:47:37.846Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
