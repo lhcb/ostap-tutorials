@@ -7,7 +7,8 @@
 * [Getting started](getting-started/README.md)
    * [Values with uncertainties](getting-started/VE.md)
    * [Simple operations with histograms](getting-started/Histos.md)
-   * [Simple operations with trees](getting-started/Histos.md)
+   * [Simple operations with trees](getting-started/Trees.md)
+   * [Persistency](getting-started/DBASE.md)
 
 ----
 
