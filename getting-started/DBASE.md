@@ -2,10 +2,10 @@
 
 ##  `Ostap.ZipShelve`
 Ostap offers very nice&efficient way to store the objects in persistent dbase.
-This persistency is build around [`shelve` module](https://docs.python.org/2/library/shelve.html) and differs in three way
+This persistency is build around [`shelve` module](https://docs.python.org/2/library/shelve.html) and differs in two way
  1. the conntent of payload is compressed, using [`zlib` module](https://docs.python.org/2/library/zlib.html) making the data base very compact 
- 2. (optionally) the whole database can ve further  `gzip`'ed using [`gzip` module](https://docs.python.org/2/library/gzip.html), if the extension `.gz` is provided. It makes data banse even more compact.
- 3. in addition to the native `dict` interface from `shelve`, more extensiveinterface with more methods is supported. 
+     - (optionally) the whole database can ve further  `gzip`'ed using [`gzip` module](https://docs.python.org/2/library/gzip.html), if the extension `.gz` is provided. It makes data banse even more compact.
+ 2. in addition to the native `dict` interface from `shelve`, more extensiveinterface with more methods is supported. 
 
 Create database and write objects to it: 
 ```python
@@ -68,7 +68,10 @@ db ['histogram'] = h1
 db ['histogramlist'] = h1,h2,h3
 db.ls()
 ```
-
+{% discussion "In details ..." %}
+For non-`ROOT` objects, database actually stores them as `ROOT::TString` objects carrying their pickle representation  
+with on-flight removal/substitutions of some magic symbol sequences, since `ROOT::TString` is not a real `BLOB`. 
+{% enddiscussion %}
 
 
 

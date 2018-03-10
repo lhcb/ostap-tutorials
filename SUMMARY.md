@@ -13,6 +13,7 @@
 ----
 
 * [Using RooFit](fitting/README.md)
+   * [Useful decorations](fitting/decorations.md)
    * [Models](fitting/models.md)
 
 ----
