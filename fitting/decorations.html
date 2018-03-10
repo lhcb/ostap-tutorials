@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Models · GitBook</title>
+        <title>Useful decorations · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../CONTRIBUTING.html" />
+    <link rel="next" href="models.html" />
     
     
-    <link rel="prev" href="decorations.html" />
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -209,7 +209,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.1.1" data-path="decorations.html">
+        <li class="chapter active" data-level="3.1.1" data-path="decorations.html">
             
                 <a href="decorations.html">
             
@@ -222,7 +222,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.1.2" data-path="models.html">
+        <li class="chapter " data-level="3.1.2" data-path="models.html">
             
                 <a href="models.html">
             
@@ -323,7 +323,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Models</a>
+        <a href=".." >Useful decorations</a>
     </h1>
 </div>
 
@@ -338,7 +338,67 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="decorations"><em>Decorations</em></h1>
+<p>Ostap  <em>decorates</em> many <code>ROOT.RooFit</code> classes, adding more convinient methods to them.  </p>
+<h2 id="rooarglist-and-rooargset"><code>RooArgList</code> and <code>RooArgSet</code></h2>
+<p>All these classes have got set of additional python-like  methods for iteration, extension, addition, elemtn access checking the content etc...
+Also several methods to provide more coherent interfaces (e.g. <code>add</code> vs <code>Add</code>) are added. </p>
+<script src="https://gist.github.com/VanyaBelyaev/69cdf870f0db8261f044cf6a29e91117.js"></script>
+
+<h2 id="rooabsdata-and-roodataset"><em>RooAbsData and RooDataSet</em></h2>
+<p>These methods also have got the extended interface with many useful methods  and operators, like 
+e.g. concatenation of datasets <code>a+b</code> and merging them <code>a*c</code>. </p>
+<p><code>RooDataSet</code> class also has go many methods, that are similar to those of <code>ROOT.TTree</code>, in particular  <code>project</code> and <code>draw</code>:</p>
+<pre><code class="lang-python">dataset = ... 
+dataset.draw(<span class="hljs-string">&apos;mass&apos;</span>,<span class="hljs-string">&apos;pt&gt;1&apos;</span>)  
+histo   = ...
+dataset.project ( histo , <span class="hljs-string">&apos;mass&apos;</span>, <span class="hljs-string">&apos;pt&gt;1&apos;</span> )
+</code></pre>
+<p>Many other methonds like <code>statVar</code>, <code>sumVar</code> , <code>statCov</code> , <code>vminmax</code> are  also the  same as for <code>ROOT.TTree</code>,  see <a href="../getting-started/Trees.md">above</a>.</p>
+<pre><code class="lang-python">s1    = dataset.statVar (<span class="hljs-string">&apos;eff&apos;</span>) 
+s2    = dataset.sumVar  (<span class="hljs-string">&apos;eff&apos;</span>) 
+r     = dataset.statCov (<span class="hljs-string">&apos;eff&apos;</span>,<span class="hljs-string">&apos;pt&apos;</span>) 
+mn,mx = dataset.vminmax (<span class="hljs-string">&apos;eff&apos;</span>)
+</code></pre>
+<h2 id="roofitresult"><em>RooFitResult</em></h2>
+<p>The class <code>RooFitResult</code> get many decorations that allow to access fit results</p>
+<pre><code class="lang-python">result = ...
+par1 = result.params()  <span class="hljs-comment">## get all floating parameters </span>
+par2 = result.params( float_only = <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## all parameters </span>
+a,v  = result.param( <span class="hljs-string">&apos;a&apos;</span> )      <span class="hljs-comment">## par by name </span>
+a,v  = result.param(  a  )      <span class="hljs-comment">## par by RooFit object itself </span>
+p    = result.a                 <span class="hljs-comment">## par as attribute </span>
+<span class="hljs-keyword">for</span> par <span class="hljs-keyword">in</span> result :   <span class="hljs-keyword">print</span> par                <span class="hljs-comment">## iteration </span>
+<span class="hljs-keyword">for</span> name,par <span class="hljs-keyword">in</span> result.iteritems() : <span class="hljs-keyword">print</span> par <span class="hljs-comment">## iteration</span>
+<span class="hljs-keyword">print</span> result.cov  ( <span class="hljs-string">&apos;a&apos;</span>,<span class="hljs-string">&apos;b&apos;</span>)   <span class="hljs-comment">## get covariance submatrix  </span>
+<span class="hljs-keyword">print</span> result.corr ( <span class="hljs-string">&apos;a&apos;</span>,<span class="hljs-string">&apos;b&apos;</span>)   <span class="hljs-comment">## get correlation coefficient</span>
+</code></pre>
+<p>Also the simple math with fiting parameters is supported </p>
+<pre><code class="lang-python">result = ...
+s = result.sum       (<span class="hljs-string">&apos;S&apos;</span>,<span class="hljs-string">&apos;B&apos;</span> ) <span class="hljs-comment">## S+B</span>
+d = result.divide    (<span class="hljs-string">&apos;S&apos;</span>,<span class="hljs-string">&apos;B&apos;</span> ) <span class="hljs-comment">## S/B</span>
+s = result.subtract  (<span class="hljs-string">&apos;B&apos;</span>,<span class="hljs-string">&apos;B1&apos;</span>) <span class="hljs-comment">## B-B1</span>
+m = result.multiply  (<span class="hljs-string">&apos;A&apos;</span>,<span class="hljs-string">&apos;B&apos;</span> ) <span class="hljs-comment">## A*B </span>
+f = result.fraction  (<span class="hljs-string">&apos;S&apos;</span>,<span class="hljs-string">&apos;B&apos;</span> ) <span class="hljs-comment">## S/(S+B)</span>
+</code></pre>
+<h2 id="roorealvar----friends"><em>RooRealVar &amp;   friends</em></h2>
+<p>Few simple operations are added to simplify the calculations  with <code>RooRealVar</code> obkects:</p>
+<pre><code class="lang-python">x = ROOT.RooRealVar( ... )
+x + <span class="hljs-number">10</span> 
+x - <span class="hljs-number">10</span> 
+x * <span class="hljs-number">10</span> 
+x / <span class="hljs-number">10</span> 
+<span class="hljs-number">10</span> + x 
+<span class="hljs-number">10</span> - x 
+<span class="hljs-number">10</span> * x 
+<span class="hljs-number">10</span> / x
+x+=<span class="hljs-number">2</span> 
+x-=<span class="hljs-number">2</span> 
+x*=<span class="hljs-number">2</span> 
+x/=<span class="hljs-number">2</span> 
+x**<span class="hljs-number">3</span>
+</code></pre>
+
                                 
                                 </section>
                             
@@ -365,12 +425,12 @@
 
             
                 
-                <a href="decorations.html" class="navigation navigation-prev " aria-label="Previous page: Useful decorations">
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Using RooFit">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="../CONTRIBUTING.html" class="navigation navigation-next " aria-label="Next page: Contributing">
+                <a href="models.html" class="navigation navigation-next " aria-label="Next page: Models">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -381,7 +441,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Models","level":"3.1.2","depth":2,"next":{"title":"Contributing","level":"4.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Useful decorations","level":"3.1.1","depth":2,"path":"fitting/decorations.md","ref":"fitting/decorations.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/models.md","mtime":"2018-03-10T16:02:00.501Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-10T16:05:58.130Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Useful decorations","level":"3.1.1","depth":2,"next":{"title":"Models","level":"3.1.2","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]},"previous":{"title":"Using RooFit","level":"3.1","depth":1,"path":"fitting/README.md","ref":"fitting/README.md","articles":[{"title":"Useful decorations","level":"3.1.1","depth":2,"path":"fitting/decorations.md","ref":"fitting/decorations.md","articles":[]},{"title":"Models","level":"3.1.2","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/decorations.md","mtime":"2018-03-10T16:02:00.501Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-10T16:05:58.130Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
