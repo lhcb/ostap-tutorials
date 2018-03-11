@@ -14,7 +14,8 @@
 
 * [Using RooFit](fitting/README.md)
    * [Useful decorations](fitting/decorations.md)
-   * [Models](fitting/models.md)
+   * [PDFs and the basic models](fitting/models.md)
+   * [Compound fit models](fitting/compound.md)
 
 ----
 
