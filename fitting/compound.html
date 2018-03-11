@@ -351,7 +351,89 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="compound-fit-models">Compound fit models</h1>
+<h2 id="1d-case"><code>1D</code>-case</h2>
+<p>Ostap offers a very easy way to build the compound fit models from the individual components. E.g.the case of  the trivial fit model that consists of one signal and one background components:</p>
+<pre><code class="lang-python">signal      = ... 
+background  = ...
+model    = Fit1D ( signal = signal , background = backround ) <span class="hljs-comment">## &lt;-- HERE! </span>
+dataset  = ...
+result , frame = model.fitTo ( dataset , draw = <span class="hljs-keyword">True</span> ) <span class="hljs-comment">## fit and vizualize</span>
+</code></pre>
+<p>The  fit model can contains several <em>signal</em> and <em>backround</em> components, and also <em>other</em> components :</p>
+<pre><code class="lang-python&apos;">model    = Fit1D ( signal = signal ,
+                   background       = backround , 
+                   othersignals     = [ ... ]   , 
+                   otherbackgrounds = [ ... ]   , 
+                   others           = [ ... ]   )
+</code></pre>
+<p>In this case several <em>signal</em>, <em>backgrounds</em> and/or <em>others</em> components can be combined into single <em>signal</em>, 
+<em>backround</em> and/or <em>others</em> components:</p>
+<pre><code class="lang-python&apos;">model    = Fit1D ( combine_signals     = True , 
+                   combine_backgrounds = True , 
+                   combine_others      = True , ... )
+</code></pre>
+<p>In practice it is very convinients approach is several signal/background/other componens are specified. </p>
+<p>On default <em>extended</em> `RooAddPdf&apos; fit model is created, however ,  one can force <em>non-extended</em> model:</p>
+<pre><code class="lang-python">model    = Fit1D ( extended = <span class="hljs-keyword">False</span> , ... )
+</code></pre>
+<p>In this case one can also instruct the class <code>Fit1D</code> to create <em>recursive</em> (default)  or <em>non-recursive</em> fit fractions:</p>
+<pre><code class="lang-python">model    = Fit1D ( extended = <span class="hljs-keyword">False</span> , recursive = <span class="hljs-keyword">False</span> , ... )
+</code></pre>
+<p>All components (<em>signal/background/others</em>)  can be specified as Ostap-based models. Also one can provide them in a form of bare <code>RooAbsPdf</code>, but for this case one needs to provide also <code>xvar</code>-variable</p>
+<pre><code class="lang-python">mass  = ROOT.RooRealVar(<span class="hljs-string">&apos;mass&apos;</span>,<span class="hljs-string">&apos;mass&apos;</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)
+gauss = ROOT.RooGaussian( <span class="hljs-string">&apos;Gauss&apos;</span>, <span class="hljs-string">&apos;Gauss&apos;</span>, mass , ... )
+model = Fit1D( signal = gauss , xvar = mass , ... )
+</code></pre>
+<p>For  <em>background</em> components there is also an alternative way to specify it: </p>
+<ul>
+<li><code>None</code> : <code>RooPolynomial</code> of zero degree (uniform distribution) will be created and used as <em>background</em> component<ul>
+<li>Attention: <code>background=None</code> does <em>not</em> imply the absence of background component</li>
+</ul>
+</li>
+<li>negative integer <code>n</code> :  Ostap model <code>PolyPos_pdf</code> will be created and used as <em>background</em> component. This model corresponds to the <em>positive</em> polynomial of  degree <code>-n</code>. The polinomial is constrained to be non-negative for the whole considered interval of <code>xvar</code>.  This constraint allows rather robust and stable fits, especialy  for the low-statistics case. </li>
+<li>non-negative integer <code>n</code>: Ostap model <code>Bkg_pdf</code>, that  is a product of the exponential function and the <em>positive</em> polynomial of degree <code>n</code> will be created and used as <em>background</em>  component. Note: <ul>
+<li>The <code>background=0</code> case corresponds to simple exponential backtround </li>
+<li>Since the polynomial is constrained  to be <em>non-negative</em> this PDF is very stable and robust, especually for the low-statistic case,</li>
+</ul>
+</li>
+<li>as <code>RooAbsReal</code> object,  in this  case it is interpreted as the exponental slope</li>
+</ul>
+<h3 id="access-to-model--componens">Access to model  componens</h3>
+<p>The indiviaul components can be accessed  using python <em>properties</em></p>
+<pre><code class="lang-python">gaudd = Gauss_pdf ( ... 
+model = Fit1D ( signal = gauss , ... ) 
+<span class="hljs-keyword">print</span> model.signal.sigma  <span class="hljs-comment">##   get sigma of Gauss </span>
+<span class="hljs-keyword">print</span> model.signal.mean   <span class="hljs-comment">##   get mean  of Gauss</span>
+</code></pre>
+<h3 id="fit-parameters">Fit parameters</h3>
+<p>The parametters of the created <code>RooAddPdf</code> can be accessed via python properties, 
+e.g. for <em>extended</em> fits:</p>
+<pre><code class="lang-python">gaudd = Gauss_pdf ( ... 
+model = Fit1D ( signal = gauss , ... ) 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;signal yield(s):&apos;</span> , model.S   
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;background(s):&apos;</span>   , model.B
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;others: &apos;</span>         , model.C
+model.S = <span class="hljs-number">100</span>   <span class="hljs-comment">## set value of signal component to be 100 events </span>
+model.B.fix(<span class="hljs-number">50</span>) <span class="hljs-comment">## fix the yield of the background component at 50  events </span>
+model.draw()
+</code></pre>
+<p>Depending on the number of corresponsing componens and flags <code>combine_signals</code>, <code>combine_backgrounds</code>, <code>combine_others</code> these properties can be <em>scalar</em> values or arrays/tuples.</p>
+<p>For  <code>combine_signal=True</code>, <code>combine_backgrounds =True</code>,  <code>combine_others=True</code> cases oen also gets properrties <code>fS</code> , <code>fB</code> and <code>fC</code> that corresponds to the  fractions of individual <em>signal/backgroud/others</em> components for the compound signal/ <em>signal/backgroud/others</em>.</p>
+<p>For <em>non-extended</em> fits, the main parameters are <em>fractions</em>:</p>
+<pre><code class="lang-python">gaudd = Gauss_pdf ( ... 
+model = Fit1D ( signal = gauss , ... , extended = <span class="hljs-keyword">False</span> ) 
+...
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;fractions:&apos;</span> , model.F
+</code></pre>
+<h2 id="2d-case"><code>2D</code>-case</h2>
+<h3 id="generic-2d-case">Generic <code>2D</code>-case</h3>
+<h3 id="symmetric-2d-case">Symmetric <code>2D</code>-case</h3>
+<h2 id="3d-case"><code>3D</code>-case</h2>
+<h3 id="generic-3d-case">Generic <code>3D</code>-case</h3>
+<h3 id="symmetric-3d-case">Symmetric <code>3D</code>-case</h3>
+<h3 id="mixed-symmetry3d-case">Mixed-symmetry<code>3D</code>-case</h3>
+
                                 
                                 </section>
                             
@@ -394,7 +476,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Compound fit models","level":"3.1.3","depth":2,"next":{"title":"Contributing","level":"4.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"PDFs and the basic models","level":"3.1.2","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/compound.md","mtime":"2018-03-11T14:28:54.656Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-11T14:31:41.751Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Compound fit models","level":"3.1.3","depth":2,"next":{"title":"Contributing","level":"4.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"PDFs and the basic models","level":"3.1.2","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/compound.md","mtime":"2018-03-11T15:30:22.560Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-11T15:32:54.059Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
