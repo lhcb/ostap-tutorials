@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Models · GitBook</title>
+        <title>PDFs and the basic models · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,7 +65,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../CONTRIBUTING.html" />
+    <link rel="next" href="compound.html" />
     
     
     <link rel="prev" href="decorations.html" />
@@ -227,7 +227,20 @@
                 <a href="models.html">
             
                     
-                    Models
+                    PDFs and the basic models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.3" data-path="compound.html">
+            
+                <a href="compound.html">
+            
+                    
+                    Compound fit models
             
                 </a>
             
@@ -323,7 +336,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Models</a>
+        <a href=".." >PDFs and the basic models</a>
     </h1>
 </div>
 
@@ -338,7 +351,138 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="pdfs-and-the-basic-models">PDFs and the basic models</h1>
+<p>Ostap provides set of useful wrapper and helper  class that drastically simplify the construction and manipulations with <code>RooAbsPdf</code>-objects.</p>
+<p>E.g. consider the simplest case - creation of the Gaussian PDF using the standard way the standard way:</p>
+<pre><code class="lang-python">x     = ROOT.RooRealVar (<span class="hljs-string">&apos;x&apos;</span>    ,<span class="hljs-string">&apos;x&apos;</span>   ,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>) 
+mean  = ROOT.RooRealVar (<span class="hljs-string">&apos;mean&apos;</span> ,<span class="hljs-string">&apos;mean&apos;</span> ,<span class="hljs-number">3.100</span>,<span class="hljs-number">3.080</span>,<span class="hljs-number">3.120</span>) 
+sigma = ROOT.RooRealVar (<span class="hljs-string">&apos;sigma&apos;</span>,<span class="hljs-string">&apos;sigma&apos;</span>,<span class="hljs-number">0.015</span>,<span class="hljs-number">0.010</span>,<span class="hljs-number">0.025</span>) 
+pdf   = ROOT.RooGaussian(<span class="hljs-string">&apos;Gauss&apos;</span>,<span class="hljs-string">&apos;Gaussian&apos;</span>, x , mean , sigma )
+</code></pre>
+<p>In Ostap it can be done in a bit simpler way </p>
+<pre><code class="lang-python">gauss = Gauss_pdf  ( <span class="hljs-string">&apos;Gauss&apos;</span> , 
+                        xvar  = ( <span class="hljs-number">2</span> , <span class="hljs-number">3</span> ) , 
+                      mean  = ( <span class="hljs-number">3.100</span> , <span class="hljs-number">3.080</span> , <span class="hljs-number">3.120</span> ) ,
+                      sigma = ( <span class="hljs-number">0.015</span> , <span class="hljs-number">0.010</span> , <span class="hljs-number">0.025</span> ) )
+gauss.draw() <span class="hljs-comment">## and one can immediately visualize the model</span>
+</code></pre>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(6033660324);" id="how--to-define-parameterclick-to-expand"><i class="fa fa-bell"></i> How  to define parameter?<span id="heading-6033660324">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-6033660324"><p>There are may ways to define parameter</p>
+<ol>
+<li>One can use the existing <code>RooAbsReal</code> object, e.g. <code>RooRealVar</code> or <code>RooConstVar</code>: <pre><code class="lang-python">mean  = ROOT.RooRealVar (<span class="hljs-string">&apos;mean&apos;</span> ,<span class="hljs-string">&apos;mean&apos;</span> ,<span class="hljs-number">3.100</span>,<span class="hljs-number">3.080</span>,<span class="hljs-number">3.120</span>) 
+gauss = Gauss_pdf  ( <span class="hljs-string">&apos;Gauss&apos;</span> , 
+                  xvar  = ( <span class="hljs-number">2</span> , <span class="hljs-number">3</span> ) , 
+                mean  = mean , <span class="hljs-comment">## &lt;--- HERE </span>
+                sigma = ( <span class="hljs-number">0.015</span> , <span class="hljs-number">0.010</span> , <span class="hljs-number">0.025</span> ) )
+</code></pre>
+<ol>
+<li>One can use 2  or 3-element tuple  <code>(minval,maxval)</code>  or <code>(value, minval,maxval)</code> or plain single number. In this  case the variable of the type <code>RooRealVar</code> will be automatically created using this  specification<pre><code class="lang-python">gauss = Gauss_pdf  ( <span class="hljs-string">&apos;Gauss&apos;</span> , 
+               xvar  = ( <span class="hljs-number">2</span> , <span class="hljs-number">3</span> ) ,                 <span class="hljs-comment">## &lt;-- HERE </span>
+             mean  = ( <span class="hljs-number">3.100</span> , <span class="hljs-number">3.080</span> , <span class="hljs-number">3.120</span> ) , <span class="hljs-comment">## &lt;-- HERE </span>
+             sigma =   <span class="hljs-number">0.015</span> )                   <span class="hljs-comment">## &lt;-- HERE </span>
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</div></div>
+For all models, all known parameter are  accessible (and documented)  as python <em>property</em></p>
+<pre><code class="lang-python">gauss = ...
+help(gauss.xvar)
+<span class="hljs-keyword">print</span> gauss.sigma 
+help(gauss.mean)
+</code></pre>
+<p>There are many predefined models, accesible  via <code>Ostap.FitModels</code> module:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> Ostap.FitModels <span class="hljs-keyword">as</span> Models
+help(Models)
+</code></pre>
+<h2 id="base-class-pdf">Base class <code>PDF</code></h2>
+<p>All  Ostap-based fit models and PDFs  (directy or indirectly) inherit from python base class <code>PDF</code>, that provides great additional functionality, 
+in particular  the methods <code>fitTo</code> and <code>draw</code> that simplfy the fitting procedure itself and visualzation of the results:</p>
+<h3 id="the-method-fitto">The method <code>fitTo</code></h3>
+<pre><code class="lang-python">gauss   = Gauss_pdf ( ... ) 
+dataset = ....
+result , frame = gauss.fitTo ( dataset , silent = <span class="hljs-keyword">True</span> , reFit = <span class="hljs-number">2</span> ) 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;FitResults: %s&apos;</span> % result
+</code></pre>
+<p>All the native <code>RooFit</code> <em>commands</em> can be specified as optional arguments, as well as many commands specific for Ostap, 
+e.g. <code>reFit=2</code> above means <em>in case of fit failure, try to refit it (up to 2 times)</em>, and the meaning of  <code>silent=True</code> is obvious.</p>
+<h3 id="the-method-draw">The method <code>draw</code></h3>
+<pre><code class="lang-python">gauss   = Gauss_pdf ( ... ) 
+dataset = ....
+result , frame = gauss.fitTo ( dataset , silent = <span class="hljs-keyword">True</span> , reFit = <span class="hljs-number">2</span> ) 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;FitResults: %s&apos;</span> % result 
+frame = gauss.draw ( dataset , nbins = <span class="hljs-number">100</span> )
+</code></pre>
+<p><em>Fitting</em>  and <em>vizualisation</em>  can be combined:</p>
+<pre><code class="lang-python">gauss   = Gauss_pdf ( ... ) 
+dataset = ....
+result , frame = gauss.fitTo ( dataset , draw  = <span class="hljs-keyword">True</span> , nbins = <span class="hljs-number">100</span> ) <span class="hljs-comment">## draw it after the fit</span>
+</code></pre>
+<h3 id="access-to-the-underlying-rooabspdf-object">Access to the underlying <code>RooAbsPdf</code> object</h3>
+<p>The access to the underlying bare <code>RooAbsPdf</code>-object can be done (if needed) via the propety <code>pdf</code> </p>
+<pre><code class="lang-python">gauss = Gauss_pdf ( ... ) 
+root_pdf  = gauss.pdf
+</code></pre>
+<h3 id="other-methods"><em>Other methods</em></h3>
+<p><code>PDF</code> class is equipped with many other useful methods: </p>
+<ul>
+<li><code>fitHisto</code>: The method <code>fitTo</code> can be <em>blindly</em> applied not only to <code>RooDataSet</code>-objects, but also to the histograms:<pre><code class="lang-python">histo = ...
+r, f   = gauss.fitTo ( histo , draw = <span class="hljs-keyword">True</span> )
+</code></pre>
+However the dedicated method <code>fitHisto</code> sometimes could be more usefu <pre><code class="lang-python">histo = ...
+gauss.fitHisto ( histo , draw = <span class="hljs-keyword">True</span> )
+</code></pre>
+</li>
+<li><code>draw_nll</code>: vizualize  NLL-scans and LL-profiles <pre><code class="lang-python">r , f = gauss.fitTo ( dataset , draw = <span class="hljs-keyword">False</span> )
+nll     , f1 = gauss.draw_nll ( <span class="hljs-string">&apos;sigma&apos;</span> ,  dataset )                  <span class="hljs-comment">## NLL</span>
+profile , f2 = gauss.draw_nll ( <span class="hljs-string">&apos;sigma&apos;</span> ,  dataset , profile = <span class="hljs-keyword">True</span> ) <span class="hljs-comment">## PROFILE</span>
+</code></pre>
+<ul>
+<li><code>generate</code> : tiny but useful wrapper for <code>RooAbsPdf::generate</code></li>
+<li><code>minmax</code>   : mane the estimates for minimal and maximal values for the PDF.  For some models it is done analytically or semianalitycally, for remainnig models it is doen  using  random shoots. <pre><code class="lang-python">mn,mx = gauss.minmax( <span class="hljs-number">500000</span> )
+</code></pre>
+</li>
+<li><code>__call__</code> : it  allows to use <code>PDF</code> as simple <em>function</em><pre><code class="lang-python">gauss = ...
+<span class="hljs-keyword">print</span> gauss( <span class="hljs-number">3.090</span> ), gauss( <span class="hljs-number">3.100</span> ), gauss( <span class="hljs-number">3.110</span> )
+</code></pre>
+</li>
+<li>Several <em>statistical</em>   functions. For some models analytical orsemianalitycal calculations are used, for  remnig models numerical estimations are performed using <code>scipy</code> </li>
+<li><code>rms</code>            :   <em>rms</em> for  the distribution </li>
+<li><code>fwhm</code>           :  <em>full width  at half maximum</em>  </li>
+<li><code>fwhm</code>           :  <em>full width  at half maximum</em>  </li>
+<li><code>moment</code>         :  the <em>moment</em> of the distribution   </li>
+<li><code>central_moment</code> :  the <em>central moment</em> of the distribution   </li>
+<li><code>skewness</code>   : <em>skewness</em> for the  distribution </li>
+<li><code>kurtosis</code>   : <em>kurtosis</em> for the  distribution </li>
+<li><code>mode</code>       : the <em>mode</em> for the distribution </li>
+<li><code>median</code>     : <em>median</em> value for the distribution</li>
+<li><code>get_mean</code>   : <em>mean</em> value for the distribution</li>
+<li><code>cl_symm</code>    : <em>symmetric confidence interval</em> </li>
+<li><code>cl_asymm</code>   : <em>asymmetric confidence interval</em> </li>
+<li><code>quantile</code>   : <em>quantile</em> value for the distribution </li>
+<li><code>integral</code>   : <em>integral</em> for the distribution </li>
+<li><code>derivative</code> : <em>derivative</em> of the PDF at the given point</li>
+</ul>
+</li>
+</ul>
+<h3 id="convolution">Convolution</h3>
+<p>... </p>
+<h2 id="generic-wrapper--generic1dpdf">Generic Wrapper  <em>Generic1D_pdf</em></h2>
+<p>The bare <code>RooAbsPdf</code> could be easily converted to Ostap-form using the generic wrapper <code>Generic1D_pdf</code>:</p>
+<pre><code class="lang-python">bare = ROOT.RooGaussian(<span class="hljs-string">&apos;Gauss&apos;</span>,<span class="hljs-string">&apos;Gaussian&apos;</span>, x , mean , sigma )
+gauss = Generic1D_pdf ( pdf = bare , xvar = x ) 
+gauss.draw() <span class="hljs-comment">## one can immediately use the full power of Ostap-PDF</span>
+</code></pre>
+<p>In a similar way there are generic wrappers for <code>2D</code> and <code>3D</code>-models:</p>
+<pre><code class="lang-python">bare2D = ... 
+bare3D = ... 
+ostap_2d =  Generic2D_pdf ( pdf = bare2D , xvar = x ,  xvar = y ) 
+ostap_3d =  Generic2D_pdf ( pdf = bare3D , xvar = x ,  xvar = y , zvar = z )
+</code></pre>
+<h2 id="2d-and-3d-cases"><code>2D</code> and <code>3D</code>-cases</h2>
+<p>For <code>2D</code> and <code>3D</code> cases there  are base classes <code>PDF2</code> and <code>PDF3</code> that in turn inhetic from <code>PDF</code> and gets all the nice functionality.
+Of course several new method specific  for <code>2D</code> and <code>3D</code>-cases  are added and th ebehaviosu of some <code>1D</code>-specific methods is  fixed. </p>
+
                                 
                                 </section>
                             
@@ -370,7 +514,7 @@
                 </a>
                 
                 
-                <a href="../CONTRIBUTING.html" class="navigation navigation-next " aria-label="Next page: Contributing">
+                <a href="compound.html" class="navigation navigation-next " aria-label="Next page: Compound fit models">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -381,7 +525,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Models","level":"3.1.2","depth":2,"next":{"title":"Contributing","level":"4.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Useful decorations","level":"3.1.1","depth":2,"path":"fitting/decorations.md","ref":"fitting/decorations.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/models.md","mtime":"2018-03-10T16:02:00.501Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-10T16:05:58.130Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"PDFs and the basic models","level":"3.1.2","depth":2,"next":{"title":"Compound fit models","level":"3.1.3","depth":2,"path":"fitting/compound.md","ref":"fitting/compound.md","articles":[]},"previous":{"title":"Useful decorations","level":"3.1.1","depth":2,"path":"fitting/decorations.md","ref":"fitting/decorations.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/models.md","mtime":"2018-03-11T14:28:54.656Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-11T14:31:41.751Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
