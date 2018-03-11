@@ -53,7 +53,7 @@ For  _background_ components there is also an alternative way to specify it:
   - as `RooAbsReal` object,  in this  case it is interpreted as the exponental slope
  
 
-### Access to model  componens 
+### Access to the model  componens 
 
 The indiviaul components can be accessed  using python _properties_
 ```python
@@ -88,9 +88,9 @@ model = Fit1D ( signal = gauss , ... , extended = False )
 print 'fractions:' , model.F   
 ```
 
-
-
-
+All the ways to deal with `Fit1D` objects are illustrated here:
+<script src="https://gist.github.com/VanyaBelyaev/1aa3edda0d6b7370db5dd8c1124f5aff.js"/></script>
+The  corresponding output can be inspected [here](https://gist.github.com/VanyaBelyaev/9bb427a2c93cba78e5aa4f4023d2686b)
 
 ## `2D`-case 
 ### Generic `2D`-case 
