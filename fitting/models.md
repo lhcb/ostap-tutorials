@@ -27,7 +27,7 @@ gauss = Gauss_pdf  ( 'Gauss' ,
                       mean  = mean , ## <--- HERE 
                       sigma = ( 0.015 , 0.010 , 0.025 ) )
 ```
- 2. One can use 2  or 3-element tuple  `(minval,maxval)`  or `(value, minval,maxval)` or plain single number. In this  case the variable of the type `RooRealVar` will be automatically created using this  specification
+  2. One can use the plain number `value`, 2- or 3-element tuple `(minval,maxval)`  or `(value, minval,maxval)`. In this  case the variable of the type `RooRealVar` will be automatically created using this specification. (In case of the plain number, the corresponding parameter will  be fixed in the fit).
 ```python
 gauss = Gauss_pdf  ( 'Gauss' , 
       	              xvar  = ( 2 , 3 ) ,                 ## <-- HERE 
@@ -42,7 +42,6 @@ help(gauss.xvar)
 print gauss.sigma 
 help(gauss.mean)
 ```
-
 
 There are many predefined models, accesible  via `Ostap.FitModels` module:
 ```python
