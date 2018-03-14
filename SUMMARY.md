@@ -16,6 +16,7 @@
    * [Useful decorations](fitting/decorations.md)
    * [PDFs and the basic models](fitting/models.md)
    * [Compound fit models](fitting/compound.md)
+   * [sPlot](fitting/splot.md)
 
 ----
 

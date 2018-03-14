@@ -7,7 +7,7 @@ E.g. consider the simplest case - creation of the Gaussian PDF using the standar
 x     = ROOT.RooRealVar ('x'    ,'x'   ,2,3) 
 mean  = ROOT.RooRealVar ('mean' ,'mean' ,3.100,3.080,3.120) 
 sigma = ROOT.RooRealVar ('sigma','sigma',0.015,0.010,0.025) 
-pdf   = ROOT.RooGaussian('Gauss','Gaussian', x , mean , sigma )
+bare  = ROOT.RooGaussian('Gauss','Gaussian', x , mean , sigma ) ## <--- HERE
 ```
 In Ostap it can be done in a bit simpler way 
 ```python
@@ -107,7 +107,7 @@ nll     , f1 = gauss.draw_nll ( 'sigma' ,  dataset )                  ## NLL
 profile , f2 = gauss.draw_nll ( 'sigma' ,  dataset , profile = True ) ## PROFILE 
 ```
  - `generate` : tiny but useful wrapper for `RooAbsPdf::generate`
- - `minmax`   : mane the estimates for minimal and maximal values for the PDF.  For some models it is done analytically or semianalitycally, for remainnig models it is doen  using  random shoots. 
+ - `minmax`   : make the estimates for the minimal and maximal values for the PDF.  For some models it is done analytically or semianalitycally, for remainig models it is done using  random shoots. 
 ```python
 mn,mx = gauss.minmax( 500000 ) 
 ```
@@ -135,7 +135,23 @@ print gauss( 3.090 ), gauss( 3.100 ), gauss( 3.110 )
 
 ### Convolution 
 
-... 
+Ostap  provides helper class that  simplify construction of fit models taking into accotun  resolution functions:
+```python
+pdf = ...
+cnv_pdf = Convolution_pdf ( 'Cnv            ' , 
+                             pdf = pdf        , 
+                             resolution = ... )
+```
+As `resolution` one can specify 
+  1.  Any resolutuon model (`RooAbsPdf`)
+  2.  simple number `s`, in this case the  gaussian resolution model with sigma = `s` will be used 
+  3.  Any `RooAbsReal` objetct, it will be used as sigma for gaussian resoltuion model
+
+There are  several optional flags 
+  -  `useFFT=True`  : use _Fast-Fourier-Transform_ or plain numerical convolution ?
+  -  `nbins=100000` : sampling for _Fast-Fourier-Transform_
+  -  `buffer=0.25`  : buffer size for _Fast-Fourier-Transform_, argument for `setBufferFraction` call
+  -  `nsigmas=6`    : window size for plain numeric convolution, the argument  for `setConvolutionWindow` call
 
 ## Generic Wrapper  _Generic1D_pdf_ 
  
