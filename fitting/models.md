@@ -169,6 +169,92 @@ ostap_2d =  Generic2D_pdf ( pdf = bare2D , xvar = x ,  xvar = y )
 ostap_3d =  Generic2D_pdf ( pdf = bare3D , xvar = x ,  xvar = y , zvar = z ) 
 ```
 
+## `1D`-models
+
+There are many predefined models, accessible  via `Ostap.FitModels` module:
+```python
+import Ostap.FitModels as Models
+help(Models)
+```
+
+### _Generic backrgound models_ 
+
+#### _Polynomial models_ 
+
+Here the list of the most useful polynomial models:
+  - `PolyPos_pdf`  : positive (non-negative) polynomial 
+  - `PolyEven_pdf` : positibe (non-negative) _symmetric_ polynomial:  `p(x)= p(2*x0-x)`, where `x0=0.5*(xmin+xmax)` 
+  - `Monotonic_pdf` : positive (non-negative) polynomial with fixed sign of the first derivative: posynomial either non-decreasing or non-increasing
+  - `Convex_pdf` : positive (non-negative) polynomial with fixed signs of the first (non-decreasing or non-increasing) and second (convex or concave) derivatives
+  - `ConvexOnly_pdf` : positive (non-negative) polynomial with fixed sign of the second (convex or concave) derivative
+  
+#### _Phasespace-based models_ 
+
+Here the list of the most useful phasespace-based models:
+  - `PS2_pdf`       : 2-body phase space (no parameters)
+  - `PSLeft_pdf`    : Low  edge of N-body phase space 
+  - `PSRight_pdf`   : High edge of L-body phase space from N-body decays  
+  - `PSNL_pdf`      : approximation for L-body phase space from N-body decays  
+  - `PS23L_pdf`     : 2-body phase space from 3-body decays with orbital momenta
+  
+#### _Polynomial-based models_ 
+
+  - `Bkg_pdf`      : The  exponential function, modulated by the positive polynomial. In practice it is the most useful function to describe the combinatorial background
+  - `PSPol_pdf`    :  L-body phase space from N-body decays modulated by a positive polynomial  
+  - `Sigmoid_pdf`  : sigmoid function (`atanh`) modulated by the positive polynomial 
+  - `TwoExpoPoly_pdf` : difference of two exponents, modulated by the positive polynomial
+
+#### _Spline-based models_ 
+
+The models, based on _B-splines_ : 
+  - `PSpline_pdf`      : positive (non-negative)  spline 
+  - `MSpline_pdf`      : positive (non-negative) monothonic (non-decreasing or non-increasing) spline 
+  - `CSpline_pdf`      : positive (non-negative) monothonic (non-decreasing or non-inclreasing) convex or concave spline 
+  - `CPSpline_pdf`     : positive (non-negative) convex or concave spline 
+
+### _Generic signal models_ 
+
+The signal-like models (peaks):
+ 
+    'Gauss_pdf'              , ## simple     Gauss
+    'CrystalBall_pdf'        , ## Crystal-ball function
+    'CrystalBallRS_pdf'      , ## right-side Crystal-ball function
+    'CB2_pdf'                , ## double-sided Crystal Ball function    
+    'Needham_pdf'            , ## Needham function for J/psi or Y fits 
+    'Apolonios_pdf'          , ## Apolonios function         
+    'Apolonios2_pdf'         , ## Apolonios function         
+    'BifurcatedGauss_pdf'    , ## bifurcated Gauss
+    'DoubleGauss_pdf'        , ## double Gauss
+    'GenGaussV1_pdf'         , ## generalized normal v1  
+    'GenGaussV2_pdf'         , ## generalized normal v2 
+    'SkewGauss_pdf'          , ## skewed gaussian (temporarily removed)
+    'Bukin_pdf'              , ## generic Bukin PDF: skewed gaussian with exponential tails
+    'StudentT_pdf'           , ## Student-T function 
+    'BifurcatedStudentT_pdf' , ## bifurcated Student-T function
+    'SinhAsinh_pdf'          , ## "Sinh-arcsinh distributions". Biometrika 96 (4): 761
+    'JohnsonSU_pdf'          , ## JonhsonSU-distribution 
+    'Atlas_pdf'              , ## modified gaussian with exponenital tails 
+    'Slash_pdf'              , ## symmetric peakk wot very heavy tails 
+    'RaisingCosine_pdf'      , ## Raising  Cosine distribution
+    'QGaussian_pdf'          , ## Q-gaussian distribution
+    'AsymmetricLaplace_pdf'  , ## asymmetric laplace 
+    'Sech_pdf'               , ## hyperboilic secant  (inverse-cosh) 
+    'Logistic_pdf'           , ## Logistic aka "sech-squared"   
+    #
+    ## pdfs for "wide" peaks, to be used with care - phase space corrections are large!
+    # 
+    'BreitWigner_pdf'      , ## (relativistic) 2-body Breit-Wigner
+    'Flatte_pdf'           , ## Flatte-function  (pipi)
+    'Flatte2_pdf'          , ## Flatte-function  (KK) 
+    'LASS_pdf'             , ## kappa-pole
+    'Bugg_pdf'             , ## sigma-pole
+    'Swanson_pdf'          , ## Swanson's S-wave cusp 
+    ##
+    'Voigt_pdf'            , ## Voigt-profile
+    'PseudoVoigt_pdf'      , ## PseudoVoigt-profile
+    'BW23L_pdf'            , ## BW23L
+ 
+ 
 ## `2D` and `3D`-cases
 For `2D` and `3D` cases there  are base classes `PDF2` and `PDF3` that in turn inhetic from `PDF` and gets all the nice functionality.
 Of course several new method specific  for `2D` and `3D`-cases  are added and th ebehaviosu of some `1D`-specific methods is  fixed. 
