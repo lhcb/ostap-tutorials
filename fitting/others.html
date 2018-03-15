@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>sPlot · GitBook</title>
+        <title>Other models · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../CONTRIBUTING.html" />
+    <link rel="next" href="2d.html" />
     
     
-    <link rel="prev" href="compound.html" />
+    <link rel="prev" href="backgrounds.html" />
     
 
     </head>
@@ -262,7 +262,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.1.2.3" data-path="others.html">
+        <li class="chapter active" data-level="3.1.2.3" data-path="others.html">
             
                 <a href="others.html">
             
@@ -319,7 +319,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.1.4" data-path="splot.html">
+        <li class="chapter " data-level="3.1.4" data-path="splot.html">
             
                 <a href="splot.html">
             
@@ -420,7 +420,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >sPlot</a>
+        <a href=".." >Other models</a>
     </h1>
 </div>
 
@@ -435,15 +435,26 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="splot">sPlot</h1>
-<p>Using <a href="http://dx.doi.org/10.1016/j.nima.2005.08.106" target="_blank">sPlot</a> is   rather  trivial in Ostap:</p>
-<pre><code class="lang-python">dataset = ...
-model   = Fit1D ( signal = ... , backgrund = ... ) 
-model.fitTo ( dataset )
-<span class="hljs-keyword">print</span> datatset   
-model.sPlot ( dataset )  <span class="hljs-comment">## &lt;--- HERE </span>
-<span class="hljs-keyword">print</span> datatset           <span class="hljs-comment">## &lt;--- note appearence of new variables</span>
-</code></pre>
+                                <h1 id="other-useful---models"><em>Other useful   models</em></h1>
+<ul>
+<li><code>GammaDist_pdf</code>      : Gamma-distributuon in shape/scale parameterization</li>
+<li><code>GenGammaDist_pdf</code>   : Generalized Gamma-distribution</li>
+<li><code>Amoroso_pdf</code>        : another view of generalized Gamma distribution</li>
+<li><code>LogGammaDist_pdf</code>   : Gamma-distributuon in shape/scale parameterization</li>
+<li><code>Log10GammaDist_pdf</code> : Gamma-distributuon in shape/scale parameterization</li>
+<li><code>LogGamma_pdf</code>        </li>
+<li><code>BetaPrime_pdf</code>      : Beta-prime distribution </li>
+<li><code>Landau_pdf</code>         : Landau distribution </li>
+<li><code>Argus_pdf</code>          : ARGUS distribution </li>
+<li><code>TwoExpos_pdf</code>       : difference of two exponents</li>
+<li><code>Gumbel_pdf</code>         : Gumbel distributions</li>
+<li><code>Weibull_pdf</code>        : Weibull distributions</li>
+</ul>
+<p>Useful to describe pt-spectra: </p>
+<ul>
+<li><code>Tsallis_pdf</code>        : Tsallis PDF </li>
+<li><code>QGSM_pdf</code>           : QGSM PDF </li>
+</ul>
 
                                 
                                 </section>
@@ -471,12 +482,12 @@ model.sPlot ( dataset )  <span class="hljs-comment">## &lt;--- HERE </span>
 
             
                 
-                <a href="compound.html" class="navigation navigation-prev " aria-label="Previous page: Compound fit models">
+                <a href="backgrounds.html" class="navigation navigation-prev " aria-label="Previous page: Background models">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="../CONTRIBUTING.html" class="navigation navigation-next " aria-label="Next page: Contributing">
+                <a href="2d.html" class="navigation navigation-next " aria-label="Next page: 2D-models">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -487,7 +498,7 @@ model.sPlot ( dataset )  <span class="hljs-comment">## &lt;--- HERE </span>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"sPlot","level":"3.1.4","depth":2,"next":{"title":"Contributing","level":"4.1","depth":1,"path":"CONTRIBUTING.md","ref":"CONTRIBUTING.md","articles":[]},"previous":{"title":"Compound fit models","level":"3.1.3","depth":2,"path":"fitting/compound.md","ref":"fitting/compound.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/splot.md","mtime":"2018-03-15T09:15:20.810Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-15T09:17:44.906Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Other models","level":"3.1.2.3","depth":3,"next":{"title":"2D-models","level":"3.1.2.4","depth":3,"path":"fitting/2d.md","ref":"fitting/2d.md","articles":[]},"previous":{"title":"Background models","level":"3.1.2.2","depth":3,"path":"fitting/backgrounds.md","ref":"fitting/backgrounds.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/others.md","mtime":"2018-03-15T09:15:20.810Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-15T09:17:44.906Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
