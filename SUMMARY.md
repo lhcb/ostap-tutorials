@@ -23,6 +23,12 @@
    * [Compound fit models](fitting/compound.md)
    * [sPlot](fitting/splot.md)
 
+* [Tools](tools/README.md)
+   * [TMVA](tools/tmva.md) 
+   * [Chopping](tools/chopping.md) 
+   * [Reweighting](tools/reweighting.md) 
+   * [PidCalib](tools/pidcalib.md) 
+       
 ----
 
 * [Contributing](CONTRIBUTING.md)
