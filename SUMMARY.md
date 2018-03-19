@@ -10,7 +10,7 @@
    * [Simple operations with trees](getting-started/Trees.md)
    * [Persistency](getting-started/DBASE.md)
 * [More on histograms](more-on-histograms/README.md)
-   * [Histogram parameterization](more-on-histograms/hparam.md)
+   * [Histogram parameterization](more-on-histograms/hparams.md)
 
 ----
 

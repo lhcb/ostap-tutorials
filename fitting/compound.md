@@ -93,8 +93,7 @@ model = Fit1D ( signal = gauss , ... , extended = False )
 print 'fractions:' , model.F   
 ```
 
-### _Extended multi-component fit model
-_
+### _Extended multi-component fit model_
 ```python
 model_ext1 = Models.Fit1D (
     name             = 'EXT1'     , 
@@ -213,7 +212,6 @@ model_ne2.F[5].value = 0.50
 The fit itself and access to fit parameters is the same as above.
 
 ### _Non-extended fit model with compound components and non-recursive fit-fractions_ 
-
 ```python
 model_ne3 = Models.Fit1D (
     name                = 'NE2'                   , 

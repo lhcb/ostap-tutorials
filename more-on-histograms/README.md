@@ -1,3 +1,3 @@
 # More on Histograms 
 
- - [Histogram parameterization](../more-on-historgams/hparam.md)
+ - [Histogram parameterization](../more-on-histograms/hparams.md)
