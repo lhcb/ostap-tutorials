@@ -9,6 +9,8 @@
    * [Simple operations with histograms](getting-started/Histos.md)
    * [Simple operations with trees](getting-started/Trees.md)
    * [Persistency](getting-started/DBASE.md)
+* [More on histograms](more-on-histograms/README.md)
+   * [Histogram parameterization](more-on-histograms/hparam.md)
 
 ----
 
@@ -32,7 +34,7 @@
 ----
 
 * [Contributing](CONTRIBUTING.md)
-* [Examples of formatting](getting-started/formatting-examples.md)
 
 ----
+
 * [Download PDF](ref://ostap-tutorials.pdf)
