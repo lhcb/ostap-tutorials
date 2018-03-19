@@ -525,7 +525,51 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="using-tmva">Using <code>TMVA</code></h1>
+<p>Ostap hosts couple of classes, that simplifies the training and using of <a href="https://root.cern.ch/tmva" target="_blank"><code>TMVA</code></a>.</p>
+<h2 id="training-tmva"><em>Training <code>TMVA</code></em></h2>
+<pre><code class="lang-python">tSignal  = ... <span class="hljs-comment">## signal     TTree/TChain</span>
+tBkg     = ... <span class="hljs-comment">## background TTree/TChain</span>
+<span class="hljs-comment">## book TMVA trainer     </span>
+<span class="hljs-keyword">from</span> Ostap.PyTMVA <span class="hljs-keyword">import</span> Trainer 
+trainer = Trainer (
+   name    = <span class="hljs-string">&apos;TestTMVA&apos;</span> ,   
+   methods = [
+   <span class="hljs-comment"># type                   name   configuration</span>
+   ( ROOT.TMVA.Types.kMLP        , <span class="hljs-string">&apos;MLP&apos;</span>        , <span class="hljs-string">&apos;H:!V:EstimatorType=CE:VarTransform=N:NCycles=200:HiddenLayers=N+3:TestRate=5:!UseRegulator&apos;</span> ) ,
+   ( ROOT.TMVA.Types.kBDT        , <span class="hljs-string">&apos;BDTG&apos;</span>       , <span class="hljs-string">&apos;H:!V:NTrees=100:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2&apos;</span> ) , 
+   ( ROOT.TMVA.Types.kCuts       , <span class="hljs-string">&apos;Cuts&apos;</span>       , <span class="hljs-string">&apos;H:!V:FitMethod=MC:EffSel:SampleSize=200000:VarProp=FSmart&apos;</span> ) ,
+   ( ROOT.TMVA.Types.kFisher     , <span class="hljs-string">&apos;Fisher&apos;</span>     , <span class="hljs-string">&apos;H:!V:Fisher:VarTransform=None:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10&apos;</span> ),
+   ( ROOT.TMVA.Types.kLikelihood , <span class="hljs-string">&apos;Likelihood&apos;</span> , <span class="hljs-string">&apos;H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50&apos;</span> )
+   ] ,
+   variables  = [ <span class="hljs-string">&apos;var1&apos;</span> , <span class="hljs-string">&apos;var2&apos;</span> ,  <span class="hljs-string">&apos;var3&apos;</span> ] , <span class="hljs-comment">## Variables to be used for training </span>
+   signal     = tSignal                       , <span class="hljs-comment">## ``Signal&apos;&apos; sample </span>
+   background = tBkg                          , <span class="hljs-comment">## ``Background&apos;&apos; sample  </span>
+   verbose    = <span class="hljs-keyword">False</span> )
+</code></pre>
+<p>Optionally one can specify also <code>signal_cuts</code> and <code>background_cuts</code>.</p>
+<p>Traing <code>TMVA</code> itself is trivial, one needs to invoke the method <code>train</code>:</p>
+<pre><code class="lang-python">weights_files = trainer.train ()
+</code></pre>
+<p>It  returs the list/tuple of <em>weight-<code>XML</code>-files</em>, the output of <code>TMVA</code> trainer.
+Optionally one can retrieve also the list of  _<code>C++-class</code>-files,  using the proeprty <code>class_files</code> or  everything together in a form of <code>tar</code>-file using the property
+<code>tar_file</code>:</p>
+<pre><code class="lang-python">weight_files = trainer.weight_files <span class="hljs-comment">## XML weights  </span>
+class_files  = trainer.class_files  <span class="hljs-comment">## C++ classes </span>
+tar_file     = trainer.tar_file     <span class="hljs-comment">## everything together</span>
+</code></pre>
+<h2 id="using-tmva"><em>Using <code>TMVA</code></em></h2>
+<p>To use trained <code>TMVA</code> one exploits <em><code>TMVA</code> reader</em>:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.PyTMVA <span class="hljs-keyword">import</span> Reader
+reader = Reader( 
+   <span class="hljs-string">&apos;MyMLP&apos;</span> ,
+   variables     = [ (<span class="hljs-string">&apos;var1&apos;</span> , <span class="hljs-keyword">lambda</span> s : s.var1 )   ,
+                     (<span class="hljs-string">&apos;var2&apos;</span> , <span class="hljs-keyword">lambda</span> s : s.var2 )   ,
+                     (<span class="hljs-string">&apos;var3&apos;</span> , <span class="hljs-keyword">lambda</span> s : s.var3 ) ] ,
+  weights_files = tar_file  )
+</code></pre>
+<p>As <code>weight_files</code> arguments one can use either the list of <em>weights-files</em> from <em>the trainer</em>, or, much easier, use the single <em>&apos;tar&apos;-file</em> form <em>the trainer</em>.</p>
+
                                 
                                 </section>
                             
@@ -568,7 +612,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"TMVA","level":"3.2.1","depth":2,"next":{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},"previous":{"title":"Tools","level":"3.2","depth":1,"path":"tools/README.md","ref":"tools/README.md","articles":[{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},{"title":"Reweighting","level":"3.2.3","depth":2,"path":"tools/reweighting.md","ref":"tools/reweighting.md","articles":[]},{"title":"PidCalib","level":"3.2.4","depth":2,"path":"tools/pidcalib.md","ref":"tools/pidcalib.md","articles":[]}]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/tmva.md","mtime":"2018-03-19T10:27:22.676Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-19T10:30:01.209Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"TMVA","level":"3.2.1","depth":2,"next":{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},"previous":{"title":"Tools","level":"3.2","depth":1,"path":"tools/README.md","ref":"tools/README.md","articles":[{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},{"title":"Reweighting","level":"3.2.3","depth":2,"path":"tools/reweighting.md","ref":"tools/reweighting.md","articles":[]},{"title":"PidCalib","level":"3.2.4","depth":2,"path":"tools/pidcalib.md","ref":"tools/pidcalib.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/tmva.md","mtime":"2018-03-19T16:31:44.720Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-19T16:33:56.848Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
