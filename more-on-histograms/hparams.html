@@ -1,0 +1,730 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Histogram parameterization · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="The Starterkit team and contributors">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-panels/panels.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-katex-auto-render/katex.min.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../fitting/" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    The Ostap tutorials
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../getting-started/">
+            
+                <a href="../getting-started/">
+            
+                    
+                    Getting started
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="../getting-started/VE.html">
+            
+                <a href="../getting-started/VE.html">
+            
+                    
+                    Values with uncertainties
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="../getting-started/Histos.html">
+            
+                <a href="../getting-started/Histos.html">
+            
+                    
+                    Simple operations with histograms
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="../getting-started/Trees.md">
+            
+                <span>
+            
+                    
+                    Simple operations with trees
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.4" data-path="../getting-started/DBASE.html">
+            
+                <a href="../getting-started/DBASE.html">
+            
+                    
+                    Persistency
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    More on histograms
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="2.2.1" data-path="hparams.html">
+            
+                <a href="hparams.html">
+            
+                    
+                    Histogram parameterization
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../fitting/">
+            
+                <a href="../fitting/">
+            
+                    
+                    Using RooFit
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.1" data-path="../fitting/decorations.html">
+            
+                <a href="../fitting/decorations.html">
+            
+                    
+                    Useful decorations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2" data-path="../fitting/models.html">
+            
+                <a href="../fitting/models.html">
+            
+                    
+                    PDFs and the basic models
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.2.1" data-path="../fitting/signals.html">
+            
+                <a href="../fitting/signals.html">
+            
+                    
+                    Signal models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2.2" data-path="../fitting/backgrounds.html">
+            
+                <a href="../fitting/backgrounds.html">
+            
+                    
+                    Background models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2.3" data-path="../fitting/others.html">
+            
+                <a href="../fitting/others.html">
+            
+                    
+                    Other models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2.4" data-path="../fitting/2d.html">
+            
+                <a href="../fitting/2d.html">
+            
+                    
+                    2D-models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2.5" data-path="../fitting/3d.html">
+            
+                <a href="../fitting/3d.html">
+            
+                    
+                    3D-models
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.3" data-path="../fitting/compound.html">
+            
+                <a href="../fitting/compound.html">
+            
+                    
+                    Compound fit models
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.4" data-path="../fitting/splot.html">
+            
+                <a href="../fitting/splot.html">
+            
+                    
+                    sPlot
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../tools/">
+            
+                <a href="../tools/">
+            
+                    
+                    Tools
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" data-path="../tools/tmva.html">
+            
+                <a href="../tools/tmva.html">
+            
+                    
+                    TMVA
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2.2" data-path="../tools/chopping.html">
+            
+                <a href="../tools/chopping.html">
+            
+                    
+                    Chopping
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2.3" data-path="../tools/reweighting.html">
+            
+                <a href="../tools/reweighting.html">
+            
+                    
+                    Reweighting
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2.4" data-path="../tools/pidcalib.html">
+            
+                <a href="../tools/pidcalib.html">
+            
+                    
+                    PidCalib
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../CONTRIBUTING.html">
+            
+                <a href="../CONTRIBUTING.html">
+            
+                    
+                    Contributing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" >
+            
+                <a target="_blank" href="ref://ostap-tutorials.pdf">
+            
+                    
+                    Download PDF
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Histogram parameterization</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="histogram-parameterization"><em>Histogram parameterization</em></h1>
+<p>Often one needs to parameterize the historgam in terms of some predefined function or expansion - e.g. parameterize the efficiency.<br>Ostap offers a wide range of embedded parameterization </p>
+<ul>
+<li>in terms of <em>Bernstein polynomials</em> <ul>
+<li>simple <em>Bernstein sum</em>, aka <em>Bezier sum</em> </li>
+<li><em>even Bernstein sum</em>, such as <code>f(x)=f(2*x0-x)</code>,  where <code>x0=0.5*(xmin+xmax)</code> </li>
+<li>non-negative  <em>Bernstein sum</em></li>
+<li>non-negative monothonic <em>Bernstein sum</em> </li>
+<li>non-negative monothonic convex or concave <em>Bernstein sum</em> </li>
+<li>non-negative convex or concave <em>Bernstein sum</em> </li>
+</ul>
+</li>
+<li>in term of <em>Legendre polynomials</em> </li>
+<li>in term of <em>Chebyshev polynomials</em> </li>
+<li>in terms of <em>Fourier series</em> </li>
+<li>in terms of <em>Fourier cosine series</em> </li>
+<li>in terms of <em>Basic splines</em><ul>
+<li>non-negative <em>B-spline</em> </li>
+<li>non-negative monothonic <em>B-spline</em> </li>
+<li>non-negative monothonic convex or concave <em>B-spline</em> </li>
+<li>non-negative convex or concave <em>B-spline</em> </li>
+</ul>
+</li>
+</ul>
+<p>From technical side, there are three branches of methods </p>
+<ul>
+<li>methods that uses only histogram values: <ul>
+<li>these are safe, robust but they ignore the uncertainties </li>
+</ul>
+</li>
+<li>methods that relies on <code>ROOT.THF1.Fit</code><ul>
+<li>typically not very  good CPU performance </li>
+<li>sometimes fragile  </li>
+</ul>
+</li>
+<li>methods that relies on <code>RooFit</code><ul>
+<li>often the best series of methods </li>
+</ul>
+</li>
+</ul>
+<h2 id="simple--parameterization"><em>Simple  parameterization</em></h2>
+<p>This group of methods allows to make easy and robust  histogram parameterization, ignooring histogram unncertainties</p>
+<pre><code class="lang-python">histo  = ...
+b1 = histo.bernstein_sum     (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Bernstein sum</span>
+b2 = histo.bernsteineven_sum (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Bernstein &quot;even&quot;-sum</span>
+l  = histo.legendre_sum      (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Legendre sum</span>
+ch = histo.chebyshev_sum     (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Chebyshev sum</span>
+f  = histo.fourier_sum       ( <span class="hljs-number">12</span> ) <span class="hljs-comment">## parameterize as order-12 Fourier sum</span>
+c  = histo.cosine_sum        ( <span class="hljs-number">12</span> ) <span class="hljs-comment">## parameterize as order-12 Fourier Cosine sum</span>
+</code></pre>
+<h2 id="rootth1fit-based-parameterizations"><code>ROOT.TH1.Fit</code>-<em>based parameterizations</em></h2>
+<p>These  methods typically have not very  good CPU performance, and sometiems are fragile, but they allow more accurate treatment of parameteriztaions, in particular them takes into account the uncertainties in the historgam. </p>
+<pre><code class="lang-python">histo  = ...
+b1  = histo.bernstein     (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Bernstein sum</span>
+b2  = histo.bernsteineven (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Bernstein &quot;even&quot;-sum</span>
+l   = histo.legendre      (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Legendre sum</span>
+ch  = histo.chebyshev     (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 Chebyshev sum</span>
+f   = histo.fourier       ( <span class="hljs-number">12</span> ) <span class="hljs-comment">## parameterize as order-12 Fourier sum</span>
+c   = histo.cosine        ( <span class="hljs-number">12</span> ) <span class="hljs-comment">## parameterize as order-12 Fourier Cosine sum</span>
+m   = histo.polynomial    (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as simple degree-6 monomial sum</span>
+p1  = histo.positive      (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 non-negative Bernstein sum </span>
+p2  = histo.positiveeven  (  <span class="hljs-number">6</span> ) <span class="hljs-comment">## parameterize as degree-6 non-negative even Bernstein sum </span>
+m1  = histo.monothonic    ( <span class="hljs-number">6</span> , increasing = <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## parameterize as degree-6 non-negative decreasing Bernstein sum </span>
+m2  = histo.monothonic    ( <span class="hljs-number">6</span> , increasing = <span class="hljs-keyword">True</span>  ) <span class="hljs-comment">## parameterize as degree-6 non-negative increasing Bernstein sum</span>
+c1  = histo.convex        ( <span class="hljs-number">6</span> , increasing = <span class="hljs-keyword">False</span> , convex = <span class="hljs-keyword">True</span>  ) <span class="hljs-comment">## parameterize as degree-6 non-negative decreasing convex  Bernstein sum </span>
+c2  = histo.convex        ( <span class="hljs-number">6</span> , increasing = <span class="hljs-keyword">False</span> , convex = <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## parameterize as degree-6 non-negative decreasing concave Bernstein sum </span>
+c3  = histo.convex        ( <span class="hljs-number">6</span> , increasing = <span class="hljs-keyword">True</span>  , convex = <span class="hljs-keyword">True</span>  ) <span class="hljs-comment">## parameterize as degree-6 non-negative increasing convex  Bernstein sum </span>
+c4  = histo.convex        ( <span class="hljs-number">6</span> , increasing = <span class="hljs-keyword">True</span>  , convex = <span class="hljs-keyword">False</span> ) <span class="hljs-comment">## parameterize as degree-6 non-negative increasing concave Bernstein sum </span>
+cc1 = histo.convexpoly    ( <span class="hljs-number">6</span> ) <span class="hljs-comment">#  parameterize as degree-6 non-negative convex  Bernstein sum </span>
+cc2 = histo.concavepoly   ( <span class="hljs-number">6</span> ) <span class="hljs-comment">#  parameterize as degree-6 non-negative concave Bernstein sum</span>
+</code></pre>
+<p>Various types of <em>splines</em> are also provided </p>
+<pre><code class="lang-python">s1 = histo.bSpline ( degree=<span class="hljs-number">3</span> , knots = <span class="hljs-number">2</span> ) <span class="hljs-comment">## parameterize as 3d order spline with 2 inner (uniform) knots </span>
+s2 = histo.bSpline ( degree=<span class="hljs-number">2</span> , knots = [<span class="hljs-number">0.1</span>,<span class="hljs-number">0.4</span>,<span class="hljs-number">0.8</span>,<span class="hljs-number">0.9</span>] ) <span class="hljs-comment">## parameterize as 3d order spline with 4 inner (non-uniform) knots</span>
+</code></pre>
+<p>and similarly for </p>
+<ul>
+<li>non-negative spline <code>pSpline</code>,</li>
+<li>non-negative monothonic spline <code>mSpline</code>, </li>
+<li>non-negative monothonic convex or concave spline <code>cSpline</code>,</li>
+<li>non-negative convex spline <code>convexSpline</code>, </li>
+<li>non-negative concave spline <code>concaveSpline</code>.</li>
+</ul>
+<h2 id="roofit-based-parameterizations"><code>RooFit</code>-<em>based parameterizations</em></h2>
+<pre><code class="lang-python">r1  = histo.pdf_positive           ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 Bernstein sum</span>
+r2  = histo.pdf_positiveeven       ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 even Bernstein polynomial </span>
+r3  = histo.pdf_increasing         ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 increasing Bernstein polynomial </span>
+r4  = histo.pdf_decreasing         ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 decreasing Bernstein polynomial </span>
+r5  = histo.pdf_convex_increasing  ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 convex  increasing Bernstein polynomial </span>
+r6  = histo.pdf_convex_decreasing  ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 convex  decreasing Bernstein polynomial </span>
+r7  = histo.pdf_concave_increasing ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 concave increasing Bernstein polynomial </span>
+r8  = histo.pdf_concave_decreasing ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 concave decreasing Bernstein polynomial </span>
+r9  = histo.pdf_concavepoly        ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 concave Bernstein polynomial </span>
+r10 = histo.pdf_convexpoly         ( <span class="hljs-number">5</span> ) <span class="hljs-comment">## parameterize and non-negative degree-5 convex  Bernstein polynomial</span>
+</code></pre>
+<p>Similarly there are methods that provdies the parameterization in terms of <em>splines</em> :</p>
+<ul>
+<li><code>pdf_pSpline</code> : non-negative <em>b-spline</em></li>
+<li><code>pdf_mSpline</code> : non-negative monothonic <em>b-spline</em></li>
+<li><code>pdf_cSpline</code> : non-negative monothonic concave or convex <em>b-spline</em> </li>
+<li><code>pdf_convexSpline</code> : non-negative monothonic convex <em>b-spline</em> </li>
+<li><code>pdf_concaveSpline</code> : non-negative monothonic concave <em>b-spline</em> </li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: More on histograms">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../fitting/" class="navigation navigation-next " aria-label="Next page: Using RooFit">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Histogram parameterization","level":"2.2.1","depth":2,"next":{"title":"Using RooFit","level":"3.1","depth":1,"path":"fitting/README.md","ref":"fitting/README.md","articles":[{"title":"Useful decorations","level":"3.1.1","depth":2,"path":"fitting/decorations.md","ref":"fitting/decorations.md","articles":[]},{"title":"PDFs and the basic models","level":"3.1.2","depth":2,"path":"fitting/models.md","ref":"fitting/models.md","articles":[{"title":"Signal models","level":"3.1.2.1","depth":3,"path":"fitting/signals.md","ref":"fitting/signals.md","articles":[]},{"title":"Background models","level":"3.1.2.2","depth":3,"path":"fitting/backgrounds.md","ref":"fitting/backgrounds.md","articles":[]},{"title":"Other models","level":"3.1.2.3","depth":3,"path":"fitting/others.md","ref":"fitting/others.md","articles":[]},{"title":"2D-models","level":"3.1.2.4","depth":3,"path":"fitting/2d.md","ref":"fitting/2d.md","articles":[]},{"title":"3D-models","level":"3.1.2.5","depth":3,"path":"fitting/3d.md","ref":"fitting/3d.md","articles":[]}]},{"title":"Compound fit models","level":"3.1.3","depth":2,"path":"fitting/compound.md","ref":"fitting/compound.md","articles":[]},{"title":"sPlot","level":"3.1.4","depth":2,"path":"fitting/splot.md","ref":"fitting/splot.md","articles":[]}]},"previous":{"title":"More on histograms","level":"2.2","depth":1,"path":"more-on-histograms/README.md","ref":"more-on-histograms/README.md","articles":[{"title":"Histogram parameterization","level":"2.2.1","depth":2,"path":"more-on-histograms/hparams.md","ref":"more-on-histograms/hparams.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"more-on-histograms/hparams.md","mtime":"2018-03-19T10:27:22.676Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-19T10:30:01.209Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-panels/panels.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-katex-auto-render/katex.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-katex-auto-render/auto-render.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-katex-auto-render/enable-auto-render.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-otherlink/js/otherlink.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
