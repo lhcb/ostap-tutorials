@@ -568,7 +568,38 @@ reader = Reader(
                      (<span class="hljs-string">&apos;var3&apos;</span> , <span class="hljs-keyword">lambda</span> s : s.var3 ) ] ,
   weights_files = tar_file  )
 </code></pre>
-<p>As <code>weight_files</code> arguments one can use either the list of <em>weights-files</em> from <em>the trainer</em>, or, much easier, use the single <em>&apos;tar&apos;-file</em> form <em>the trainer</em>.</p>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(7299061952);" id="what-is-lambda-s--svar1-hereclick-to-expand"><i class="fa fa-bell"></i> What is `lambda s : s.var1` here?<span id="heading-7299061952">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-7299061952"><p>The the element of the pair is, obviously, the variable name.
+The second   argument is <em>accessor function</em>. 
+It will be applied for <em>1-argument call</em> of the <em>method</em>.
+E.g. in this example, one  can apply it to <code>TTree</code>/<code>TChain</code>/<code>RooAbsData</code>/<code>RooArgSet</code> and the variable 
+<code>var1</code> from   this <code>TTree</code>/<code>TChain</code>/<code>RooAbsData</code>/<code>RooArgSet</code> will be used as <code>&apos;var1&apos;</code> for the <code>TMVA</code>.
+Accessor  functions coudl be  trivial, as on this case,  but they also can be less trivial:</p>
+<pre><code class="lang-python">variables     = [ (<span class="hljs-string">&apos;var1&apos;</span> , <span class="hljs-keyword">lambda</span> s : s.rapidity     )   , <span class="hljs-comment">## use another name </span>
+                  (<span class="hljs-string">&apos;var2&apos;</span> , <span class="hljs-keyword">lambda</span> s : s.pt/<span class="hljs-number">1000</span>      )   , <span class="hljs-comment">## make some rescaling</span>
+                  (<span class="hljs-string">&apos;var3&apos;</span> , <span class="hljs-keyword">lambda</span> s : atan2(s.y,s.x) ) ] , <span class="hljs-comment">## make more complicated calculations</span>
+</code></pre>
+<p>If one wants to use other objects for <em>1-argument call</em>, other set of accessor  functions   need to be supplied.
+E.g. if data  are expected to be supplied  as a <code>tuple</code>/<code>list</code>/<code>std::vector&lt;...&gt;</code>, one   can use </p>
+<pre><code class="lang-python">variables     = [ (<span class="hljs-string">&apos;var1&apos;</span> , <span class="hljs-keyword">lambda</span> s : s[<span class="hljs-number">0</span>] )   , <span class="hljs-comment">## use another name </span>
+                  (<span class="hljs-string">&apos;var2&apos;</span> , <span class="hljs-keyword">lambda</span> s : s[<span class="hljs-number">1</span>] )   , <span class="hljs-comment">## make some rescaling</span>
+                  (<span class="hljs-string">&apos;var3&apos;</span> , <span class="hljs-keyword">lambda</span> s : a[<span class="hljs-number">2</span>] ) ] , <span class="hljs-comment">## make more complicated calculations</span>
+</code></pre>
+</div></div></p>
+<p>As <code>weight_files</code> arguments one can use either the list of <em>weights-files</em> from <em>the trainer</em>, or, <em>much easier</em>, use the single <em>&apos;tar&apos;-file</em> from <em>the trainer</em>. The methods,  available from the weight files can be checked as</p>
+<pre><code class="lang-python"><span class="hljs-keyword">print</span> reader.methods 
+`
+</code></pre>
+<p>And the usage of the reader is rather trivial, e.g. one can  explicitly request the  responce for certain set of arguments:</p>
+<pre><code class="lang-python">v1,  v2,  v3 = .... 
+mlp  = reader[<span class="hljs-string">&apos;MLP&apos;</span>]                     <span class="hljs-comment">## get  one method </span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;MLP value is %s&apos;</span>  % mlp ( v1 , v2 ,  v3 )
+</code></pre>
+<p>In practice, one practially always uses it with <code>TTree</code>/<code>TChain</code>/<code>RooAbsData</code>/<code>RooArgSet</code>, in this  case one use <em>1-argument call</em>,  assuming then proper <em>accessor functions</em> are supplied: </p>
+<pre><code class="lang-python">tree = ... <span class="hljs-comment">##  the tree </span>
+mlp  = reader[<span class="hljs-string">&apos;MLP&apos;</span>]                     <span class="hljs-comment">## get  one methods </span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> tree :                          <span class="hljs-comment">## loop over the entries </span>
+    <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;MLP value is %s&apos;</span>  % mlp ( i ) <span class="hljs-comment">## get the  value</span>
+</code></pre>
 
                                 
                                 </section>
@@ -612,7 +643,7 @@ reader = Reader(
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"TMVA","level":"3.2.1","depth":2,"next":{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},"previous":{"title":"Tools","level":"3.2","depth":1,"path":"tools/README.md","ref":"tools/README.md","articles":[{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},{"title":"Reweighting","level":"3.2.3","depth":2,"path":"tools/reweighting.md","ref":"tools/reweighting.md","articles":[]},{"title":"PidCalib","level":"3.2.4","depth":2,"path":"tools/pidcalib.md","ref":"tools/pidcalib.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/tmva.md","mtime":"2018-03-19T16:31:44.720Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-19T16:33:56.848Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"TMVA","level":"3.2.1","depth":2,"next":{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},"previous":{"title":"Tools","level":"3.2","depth":1,"path":"tools/README.md","ref":"tools/README.md","articles":[{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},{"title":"Reweighting","level":"3.2.3","depth":2,"path":"tools/reweighting.md","ref":"tools/reweighting.md","articles":[]},{"title":"PidCalib","level":"3.2.4","depth":2,"path":"tools/pidcalib.md","ref":"tools/pidcalib.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/tmva.md","mtime":"2018-03-21T16:09:23.028Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-21T16:11:59.288Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
