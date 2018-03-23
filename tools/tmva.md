@@ -69,6 +69,16 @@ variables     = [ ('var1' , lambda s : s[0] )   , ## use another name
                   ('var2' , lambda s : s[1] )   , ## make some rescaling
                   ('var3' , lambda s : a[2] ) ] , ## make more complicated calculations
 ```
+One  can  also use just the plain list of variable names:
+```python
+variables     = [ 'var1' , 'var2' , 'var3' ] 
+```
+This list will be automatically transformed into 
+```python
+variables     = [ ('var1' , lambda s : getattr( s , 'var1') ) ,
+                  ('var2' , lambda s : getattr( s , 'var2') ) ,
+                  ('var3' , lambda s : getattr( s , 'var3') ) ]
+```
 {% enddiscussion %}
 
 As `weight_files` arguments one can use either the list of _weights-files_ from _the trainer_, or, _much easier_, use the single _'tar'-file_ from _the trainer_. The methods,  available from the weight files can be checked as
@@ -84,7 +94,7 @@ print 'MLP value is %s'  % mlp ( v1 , v2 ,  v3 )
 In practice, one practially always uses it with `TTree`/`TChain`/`RooAbsData`/`RooArgSet`, in this  case one use _1-argument call_,  assuming then proper _accessor functions_ are supplied: 
 ```python
 tree = ... ##  the tree 
-mlp  = reader['MLP']                     ## get  one methods 
+mlp  = reader['MLP']                     ## get  one method
 for i in tree :                          ## loop over the entries 
     print 'MLP value is %s'  % mlp ( i ) ## get the  value 
 ```
