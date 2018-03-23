@@ -525,7 +525,62 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="using-chopping-for-tmva-trainingusing">Using <em>chopping</em> for <code>TMVA</code> training/using</h1>
+<p><em>Chopping</em> is a technique to use the limited set of data for TMVA training. In this approach  data   are <em>chopped</em> into several categories and for  each category <code>i</code> TMV  is trained using the   remaing   <code>N-1</code> categories, and the trained <code>TMVA</code>  is applied to the events from    category  <code>i</code>.</p>
+<h2 id="training-tmva-chopper"><em>Training <code>TMVA</code>-chopper</em></h2>
+<p>The <em>trainig-with-chopping</em> is fairly trivial. First one need to define the number of distinct categories and the function to classify the events into training categories.  E.g. for <code>TMVA</code> training</p>
+<pre><code class="lang-python">tSignal  = ... <span class="hljs-comment">## signal     TTree/TChain</span>
+tBkg     = ... <span class="hljs-comment">## background TTree/TChain</span>
+<span class="hljs-comment">## book TMVA trainer     </span>
+<span class="hljs-keyword">from</span> Ostap.TMVAChopper <span class="hljs-keyword">import</span> Trainer 
+trainer = Trainer (
+  N        = N                 , <span class="hljs-comment">## ATTENTION! N is number of categories </span>
+  category = <span class="hljs-string">&quot;137*evt+813*run&quot;</span> , <span class="hljs-comment">## ATTENTION! It is a classification function      </span>
+  chop_signal       = <span class="hljs-keyword">False</span>    , <span class="hljs-comment">## chop the signal     ?  (default) </span>
+  chop_background   = <span class="hljs-keyword">True</span>     , <span class="hljs-comment">## chop the background ?  (default)</span>
+  ...
+</code></pre>
+<p>All other arguments of <code>Trainer</code> are the same as for <a href="tmva.html">regular <code>TMVA</code> trainer</a>. Arguments <code>chop_signal</code> and <code>chop_background</code> defined what sample (or both) to be <em>chopped</em>.  The    argument caterory described <em>the integer-valued function</em>, used for classification of events.  Actually <em>trainer</em> construct classification  function as <code>category%N</code>. </p>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(8489989083);" id="how-to-choose-chopping-parametersclick-to-expand"><i class="fa fa-bell"></i> How to choose chopping parameters?<span id="heading-8489989083">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-8489989083"><p>For efficient usage of events number of   categroeis shoudl be   rather large <code>N&gt;&gt;2</code>. For the given number of categories <code>N</code>, the   fraction of events used for <code>TMVA</code> training is <code>(N-1)/N</code>. Therefore with large <code>N</code> events are used more  efficiently.  From other side, for large <code>N</code> the traing time is proportional to <code>N</code>, while the  traing results shodul be more or less independent on <code>N</code>. It makes senseless  usage of <code>N&gt;100</code>. Therefore one gets <code>2&lt;&lt;N&lt;100</code>. In practice it is convinient to  choose <code>10&lt;N&lt;20</code>. </p>
+<p>The ideal classification function <em>must</em> be independent on the properties of  signal and or background. It should be <code>pseudorandom</code> and provide almost uniform population of categories. It is very easy to  achive using the following  expression  <code>(Na*a+Nb*b+Nc*c+...+Nz*z+)%N</code>, where <code>a</code>, <code>b</code>, ... , <code>z</code> are some integer-valued variables from the input <code>TTree</code>/<code>TChain</code> (event  number, run-number, GPS time in nanoseconds, number of  tracks in  event. number of hits in SPD, etc...), and <code>Na</code>, <code>Nb</code>, ..., <code>Nz</code> are prime numbers, that are large enough (<code>Na&gt;&gt;N</code>, <code>Nb&gt;&gt;N</code>, ... , <code>Nz&gt;&gt;N</code>).  With such construction, choosing<code>N</code> to be  also a prime number, one almost   guaranteed that  events are <em>randomly</em>  distributed into <code>N</code>-categories.</p>
+<p>The category population can be  checked using setof  control historgams: </p>
+<pre><code class="lang-python">bc =  trainer.background_categories 
+sc =  trainer.signal_categories 
+bc[<span class="hljs-number">0</span>].Draw() <span class="hljs-comment">## show popultion of background categroies</span>
+bc[<span class="hljs-number">1</span>].Draw() <span class="hljs-comment">## the same with  different binning</span>
+
+sc[<span class="hljs-number">0</span>].Draw() <span class="hljs-comment">## show popultion of signal categroies</span>
+sc[<span class="hljs-number">1</span>].Draw() <span class="hljs-comment">## the same with  different binning</span>
+</code></pre>
+</div></div></p>
+<h2 id="using-tmva-chopper"><em>Using <code>TMVA</code>-chopper</em></h2>
+<p>Again one needs to define the classification function for input data. Clealry this function should match  the one used in training</p>
+<pre><code class="lang-python">category = <span class="hljs-keyword">lambda</span> s :  int ( s.evt*<span class="hljs-number">137</span> + <span class="hljs-number">813</span>*s.run ) % N <span class="hljs-comment">## the  classification function  </span>
+<span class="hljs-keyword">from</span> Ostap.TMVAChopper <span class="hljs-keyword">import</span> Reader   <span class="hljs-comment">## ATTENTION</span>
+reader = Reader(
+    N             = N         , <span class="hljs-comment">##  number of   categories</span>
+    categoryfunc  = category  , <span class="hljs-comment">## category </span>
+    ...
+</code></pre>
+<p>All other arguments of <code>Reader</code> are the same as for <a href="tmva.html">regular <code>TMVA</code> reader</a>.  The    created <em>reader</em> is used exactly in the same way as for <em>no-chopping</em>-case: </p>
+<pre><code class="lang-python">tree = ... <span class="hljs-comment">##  the tree </span>
+mlp  = reader[<span class="hljs-string">&apos;MLP&apos;</span>]                     <span class="hljs-comment">## get  one method</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> tree :                          <span class="hljs-comment">## loop over the entries </span>
+    <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;MLP value is %s&apos;</span>  % mlp ( i ) <span class="hljs-comment">## get the  value</span>
+</code></pre>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(9127549343);" id="for-tests-and-debugclick-to-expand"><i class="fa fa-bell"></i> For tests and debug<span id="heading-9127549343">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-9127549343"><p>For test and  debug purposes one can use it also  as a function:</p>
+<pre><code class="lang-python">v1,  v2,  v3 = .... 
+mlp  = reader[<span class="hljs-string">&apos;MLP&apos;</span>]    <span class="hljs-comment">## get  one method </span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range ( N ) :  <span class="hljs-comment">## loop over   categories </span>
+    <span class="hljs-keyword">print</span> <span class="hljs-string">&apos;MLP value for  categroy %s is %s&apos;</span>  % ( i , mlp ( i , v1 , v2 ,  v3 ) )
+</code></pre>
+<p>And even get the difference between responces for different   categories. Clearly the spread of values should be small enough</p>
+<pre><code class="lang-python">v1,  v2,  v3 = .... 
+mean = mlp.mean ( v1 , v2 , v3 ) <span class="hljs-comment">## get a mean-value over  different  categories </span>
+stat = mlp.stat ( v1 , v2 , v3 ) <span class="hljs-comment">## get a statistics  (mean,rms, min/max,...) of  responces</span>
+</code></pre>
+</div></div></p>
+
                                 
                                 </section>
                             
@@ -568,7 +623,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Chopping","level":"3.2.2","depth":2,"next":{"title":"Reweighting","level":"3.2.3","depth":2,"path":"tools/reweighting.md","ref":"tools/reweighting.md","articles":[]},"previous":{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/chopping.md","mtime":"2018-03-21T16:09:23.028Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-21T16:11:59.288Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Chopping","level":"3.2.2","depth":2,"next":{"title":"Reweighting","level":"3.2.3","depth":2,"path":"tools/reweighting.md","ref":"tools/reweighting.md","articles":[]},"previous":{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/chopping.md","mtime":"2018-03-23T15:17:15.840Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-23T15:19:13.974Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
