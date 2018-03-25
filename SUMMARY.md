@@ -21,9 +21,11 @@
       * [Background models](fitting/backgrounds.md)
       * [Other models](fitting/others.md)
       * [2D-models](fitting/2d.md)
-      * [3D-models](fitting/3d.md)
+      * [3D-models](fitting/3d.md)      
    * [Compound fit models](fitting/compound.md)
    * [sPlot](fitting/splot.md)
+   & ["Weighted" fits](fitting/weighted.md)
+   & [Constraints](fitting/contraints.md)
 
 * [Tools](tools/README.md)
    * [TMVA](tools/tmva.md) 
