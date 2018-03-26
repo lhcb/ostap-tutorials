@@ -247,10 +247,22 @@ The example also illustrates how to use various _histogram comparison functions_
 
 ### _More complicated case of non-factorizeable_ `2D`_-reweighting_
 
-The example of advanced 2D-reweighting can be inspected here
-In this example we have three _data distributions_
+The example of advanced 2D-reweighting can be inspected [here.](https://gist.github.com/VanyaBelyaev/fb9b48500f9d7d6ec0ff5612977d7e97)
+In this example we have three _data distributions_ fro two  variables 
   1  one-dimensional `x`-distribution with fine binninig
   1  one-dimensional `y`-distribution with fine binninig
   1  two-dimensional `y:x`-distribution with coarse binning
+
+![data-x](./img/RW2_x.png)
+![data-y](./img/RW2_y.png)
+![data-xy](./img/RW2_xy.png)
  
-It reflects the frequent case of _kinematic reweighting_ usingtransverse momentum and rapidity. Typically one has enough events to make fine-binned one-dimensional distributions, but two-dimensional distributions  can be obtained only with  relatively coarse binning  scheme.   
+It reflects relatively frequent case of _kinematic reweighting_ using the transverse momentum and rapidity. Typically one has enough events to make fine-binned one-dimensional reference distributions, but two-dimensional distributions  can be obtained only with relatively coarse binning  scheme.
+
+
+_Simulated_  sample is a simlpe 2D-uniform distribution. Note that the _data distributions_ are non-factorizeable, and simple 1D-reweightings here is not enought.  In this example, for the first five iteration only 2D-reweighting `y:x` is applied, and then two 1D-reweighting `x` and `y` are added.  
+
+After the reweighting the simulated distributins are
+ - for `x`-variable:  _data distribution_ (red filled circled) vs _simulated sample_ (blue open squares) ![data-rwx](./img/RW2_rwx.png)
+ - for `y`-variable: _data distribution_ (green filled diamonds) vs _simulated sample_ (orange filled swiss-crosses) ![data-rwy](./img/RW2_rwy.png)
+ - for `y:x`-variables  ![data-rwxy6](./img/RW2_rwxy.png)
