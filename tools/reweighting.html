@@ -364,6 +364,32 @@
             
         </li>
     
+        <li class="chapter " data-level="3.1.5" data-path="../fitting/weighted.html">
+            
+                <a href="../fitting/weighted.html">
+            
+                    
+                    Weighted fits
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.6" data-path="../fitting/contraints.html">
+            
+                <a href="../fitting/contraints.html">
+            
+                    
+                    Constraints
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -525,7 +551,220 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="reweighting"><em>Reweighting</em></h1>
+<p>Ostap offers set of  utlities to <em>reweight</em> the distributions. Typical use-case is </p>
+<ul>
+<li>one has set of <em>data</em> distributions </li>
+<li>and <em>simulation</em> does not describe these  distributions well, and one needs to <em>reweight</em> simulation to describe all distributions</li>
+</ul>
+<p>It is relatively easy  procedure in Ostap,  however it requires some code writing.</p>
+<h2 id="data-and-simulated-distributions"><em>Data</em> and <em>simulated</em> distributions</h2>
+<p>First, one needs to specify  <em>data</em>   distributions.   It can be done in form of 1D,2D and 3D histograms, or as 1,2, or 3-argument functions
+or even  all these techniques could be used together. It is important that these data distributions
+should be strickly positive for the corresponding range of variables. E.g. in case of histograms, there should be no empty or negative bin content.  </p>
+<pre><code class="lang-python">hdata_x = ROOT.TH1D ( ... )               <span class="hljs-comment">## e.g. use the histogram </span>
+hdata_x = <span class="hljs-keyword">lambda</span> x :  math.exp (-x/<span class="hljs-number">10</span> ) ) <span class="hljs-comment">## or use a function </span>
+...
+hdata_y = ...
+</code></pre>
+<p>Second, for each  <em>data distribution</em> one needs to prebook the corresponding template histogram that will be filled from <em>simulated</em> sample. This template histogram should have the  same dimensionality (1,2,3) and  the corresponidg <em>data distribtion</em>. If <em>data distribution</em> is specified in a form of historgam, the edges of prebooked template histogram should correspond to  the edges of data distribution, but there is no requirements  for  binning. Binning could be arbtrary, provided that there are no empty bins.  </p>
+<pre><code class="lang-python">hmc_x = ROOT.TH1D ( ... )
+hmc_y = ....
+</code></pre>
+<h2 id="iterations">Iterations</h2>
+<p>Third, one needs to create <em>empty</em> database where  <em>the iterative weights</em> are stored: </p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> Ostap.ZipShelve <span class="hljs-keyword">as</span> DBASE 
+dbname = <span class="hljs-string">&apos;weights.db&apos;</span>
+<span class="hljs-keyword">with</span> DBASE.open( dbname ,<span class="hljs-string">&apos;c&apos;</span>) <span class="hljs-keyword">as</span> db : 
+     <span class="hljs-keyword">pass</span>
+</code></pre>
+<p>Since <em>Reweighting</em> is  essentially  iterative procedure, we need to define some maximal number of iterations </p>
+<pre><code class="lang-python">iter_max =   <span class="hljs-number">10</span> 
+<span class="hljs-keyword">for</span> iter <span class="hljs-keyword">in</span> range(iter_max) : 
+   ...
+</code></pre>
+<h3 id="weighter-object"><em>Weighter object</em></h3>
+<p>And for each  iteration we need to create <em>weighting</em> object, that reads the current weights  from database <code>weight.db</code></p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.Reweighting <span class="hljs-keyword">import</span> Weight  
+weightings = [
+    <span class="hljs-comment">##         accessor function    address indatabase    </span>
+    Weight.Var ( <span class="hljs-keyword">lambda</span> s : s.x  , <span class="hljs-string">&apos;x-reweight&apos;</span>  ) ,
+    ...  
+]    
+weighter   = Weight ( dbname , weightings )
+</code></pre>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(5779057283);" id="what-is-itclick-to-expand"><i class="fa fa-bell"></i> What is it?<span id="heading-5779057283">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-5779057283"><p>The accessor function is used to get the variable  from <em>simulated sample</em>. E.g. in this form, <code>TTree</code>/<code>TChain</code>/<code>RooDataSet</code>/<code>RooArgSet</code> can be used as source of <em>simulated</em> data.
+but it could be also   e.g. some table, <code>numpy</code> array or any other  storage. In this case the  accessor function needs to be modified accordingly. The   second parameter specify the location in (newly created empty) database, where the current weights are to be taked from. Since the  newly created  database is empty, for the first iteration all weights are  <em>trivial</em> and equal to 1:</p>
+<pre><code class="lang-python">mc_tree =  ...
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>): 
+  mc_tree.GetEntry(i) 
+  <span class="hljs-keyword">print</span> <span class="hljs-string">&apos; weight for event %d is %s&apos;</span> % ( i , weighted (  mc_tree ) )  
+</code></pre>
+</div></div></p>
+<h3 id="weighted-simulated-sample"><em>Weighted simulated sample</em></h3>
+<p>As the next step one needs to prepare <em>simulated dataset</em>, <code>RooDataSet</code>, that </p>
+<ul>
+<li>contains all varables for reweighting </li>
+<li>the  current values of <em>weights</em>, provided by <code>weighter</code>-object  above </li>
+</ul>
+<p>There are many ways to achive this. E.g. one can use <code>SelectorWithVars</code>-utility to decode data  from  input <code>TTree</code>/<code>TChain</code> into  <code>RooDataSet</code>:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.Selectors   <span class="hljs-keyword">import</span> SelectorWithVars, Variable  
+<span class="hljs-comment">## variables to be used in MC-dataset </span>
+variables  = [
+   Variable ( <span class="hljs-string">&apos;x&apos;</span>      , <span class="hljs-string">&apos;x-var&apos;</span>  , <span class="hljs-number">0</span>  , <span class="hljs-number">20</span> , <span class="hljs-keyword">lambda</span> s : s.x ) ,  
+   ...
+   Variable ( <span class="hljs-string">&apos;weight&apos;</span> , <span class="hljs-string">&apos;weight&apos;</span> , accessor = weighter       )  
+   ]
+<span class="hljs-comment">## create new &quot;weighted&quot; mcdataset</span>
+selector = SelectorWithVars (
+   variables ,
+   <span class="hljs-string">&apos;0&lt;x &amp;&amp; x&lt;20 &amp;&amp; 0&lt;y &amp;&amp; y&lt;20&apos;</span>
+   )
+<span class="hljs-comment">## process </span>
+mc_tree.process ( selector )
+mcds = selector.data      <span class="hljs-comment">## newly created simulated dataset</span>
+<span class="hljs-keyword">print</span> mcds
+</code></pre>
+<h3 id="calculate-the-updated-weights-and-store-them-in-database">Calculate the updated weights and store them in database</h3>
+<p>At the next step we calculate the updated weights and store them in database </p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.Reweighting <span class="hljs-keyword">import</span> makeWeights,  WeightingPlot  
+plots  = [
+  <span class="hljs-comment">##             what      how        where          data      simulated-template </span>
+  WeightingPlot ( <span class="hljs-string">&apos;x&apos;</span>   , <span class="hljs-string">&apos;weight&apos;</span> , <span class="hljs-string">&apos;x-reweight&apos;</span>  , hdata_x , hmc_x       ) ,  
+  ...
+  ]
+<span class="hljs-comment">## calculate updated weights and store them in database </span>
+more = makeWeights ( mcds , plots , dbname , delta = <span class="hljs-number">0.01</span> ) <span class="hljs-comment">## &lt;-- HERE</span>
+</code></pre>
+<p>The object <code>WeightingPlot</code> defines the rule to fill <em>simulated</em> histogram from <em>simulated</em> dataset and associated the filled <em>simulated</em> histogram with <em>data distribution</em>. The  actual correction to the  weights is calculated according to the rule <code>w = dd / mcd</code>, where <code>dd</code> is a <em>density</em> for the data distribution and <code>mcd</code> is a <em>density</em> for <em>simulated</em> distribution. The <em>weights</em> <code>w</code> are calculated for each entry in array <code>plots</code>, they are properly normalized and stored in database <code>dbname</code> to be used for the next iteration. The   function <code>makeWeights</code> also print the <em>statistic</em> of <em>normalized weights</em>:</p>
+<pre><code># Ostap.Reweighting         INFO    Reweighting:           ``x-reweight&apos;&apos;: mean/(min,max):        (1.00+-0.00)/(0.985,1.012) RMS:(0.74+-0.00)[%]
+</code></pre><p>The last entries in this row summarize the statistics of corrections to the current weight. In this example, the mean correction is <code>1.00</code>, the minimal correction is <code>0.985</code>, the maximal correction is <code>1.012</code> and rms for corrections  is  <code>0.74\%</code>. In tihs   example one sees that for this paricualr iteration th ecorrections  are  rather small, and probably one can stop iterations. Two parameters <code>delta</code> and <code>minmax</code> of <code>makeWeights</code> function allows to automatized th emakinnng the decison.  If calculated rms for all  corrections is less than specified <code>delta</code> parameter and for each correction minnmax-difference deos not exceeed the  specified <code>minmax</code>-parameter (the default value is <code>0.05</code>), function return <code>False</code> (meaning <em>no  more iterations are needed</em>), otherwise it returns <code>True</code>. And using  this hint   one can stop iterations or go further:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> more <span class="hljs-keyword">and</span> iter &gt; <span class="hljs-number">2</span> :
+    <span class="hljs-keyword">print</span>  <span class="hljs-string">&apos;No more iteratinos  are needed!&apos;</span>
+    <span class="hljs-keyword">break</span>
+</code></pre>
+<h3 id="compare-data-and-simulated-distributions-for-each-iteration-optional"><em>Compare data and simulated distributions for each iteration (optional)</em></h3>
+<p>In practice it is useful (and adviseable) to compare the <em>data</em> and <em>simulated</em> distributions at each iteration to hjave better control over the iteration process. One  can make   this   comparion using zillions of the ways, but for the most imnportant case in practice, where <em>data  distribution</em> is  specified in a form of histogram, there are some predefined utilities</p>
+<pre><code class="lang-python"><span class="hljs-comment">## prepare simulated distribution with current weights:</span>
+mcds.project ( hmc_x , <span class="hljs-string">&apos;x&apos;</span> , <span class="hljs-string">&apos;weight&apos;</span> ) 
+
+<span class="hljs-comment">## compare the basic properties: mean, rms, skewness and kurtosis</span>
+hdata_x.cmp_prnt ( hmc_x , <span class="hljs-string">&apos;DATA&apos;</span> , <span class="hljs-string">&apos;MC&apos;</span> , <span class="hljs-string">&apos;DATA(x) vs MC(x)&apos;</span> )
+
+<span class="hljs-comment">## calculate the ``distance``:</span>
+dist = hdata_x.cmp_dist ( hmc_x , density = <span class="hljs-keyword">True</span> )
+<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;DATA(x)-MC(x)  ``distance&apos;&apos;        %s&quot;</span> % dist 
+
+<span class="hljs-comment">## calculate the &apos;orthogonality&apos;</span>
+cost = hdata_x.cmp_cos  ( hmc_x , density = <span class="hljs-keyword">True</span> )
+<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;DATA(x)-MC(x)  ``orthogonality&apos;&apos; %s&quot;</span> % cost 
+
+<span class="hljs-comment">## find the points of the maximal difference </span>
+mn,mx = hdata_x.cmp_minmax ( hmc_x   , diff = <span class="hljs-keyword">lambda</span> a,b : a/b , density = <span class="hljs-keyword">True</span> )
+<span class="hljs-keyword">print</span> <span class="hljs-string">&quot;DATA*(x)/MC(x) ``min/max-distance&apos;&apos;[%%] (%s)/(%s) at x=%.1f/%.1f&quot;</span> % (
+        (<span class="hljs-number">100</span>*mn[<span class="hljs-number">1</span>]<span class="hljs-number">-100</span>) , (<span class="hljs-number">100</span>*mx[<span class="hljs-number">1</span>]<span class="hljs-number">-100</span>) , mn[<span class="hljs-number">0</span>]  , mx[<span class="hljs-number">0</span>] )
+</code></pre>
+<h2 id="using-the-result">Using the result</h2>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.Reweighting <span class="hljs-keyword">import</span> Weight  
+weightings = [
+    <span class="hljs-comment">##         accessor function    address indatabase    </span>
+    Weight.Var ( <span class="hljs-keyword">lambda</span> s : s.x  , <span class="hljs-string">&apos;x-reweight&apos;</span>  ) ,
+    ...  
+]    
+weighter = Weight ( dbname , weightings )
+mc_tree  =  ...
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>): 
+  mc_tree.GetEntry(i) 
+  <span class="hljs-keyword">print</span> <span class="hljs-string">&apos; weight for event %d is %s&apos;</span> % ( i , weighted (  mc_tree ) )
+</code></pre>
+<p>Note that due to explicit  specification of <em>accessor function</em>, <em>reweighter</em> can be customised to work with any type of input <em>events/records</em>. e/g/ assuem that  <em>event</em> is a plain <em>array</em>, 
+and <code>x</code>-variable corresponds to index <code>0</code>:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> Ostap.Reweighting <span class="hljs-keyword">import</span> Weight  
+weightings = [
+    <span class="hljs-comment">##         accessor function    address indatabase    </span>
+    Weight.Var ( <span class="hljs-keyword">lambda</span> s : s[<span class="hljs-number">0</span>]  , <span class="hljs-string">&apos;x-reweight&apos;</span>  ) ,
+    ...  
+]    
+weighter = Weight ( dbname , weightings )
+mc_tree  =  ...
+<span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span>  events : 
+  <span class="hljs-keyword">print</span> <span class="hljs-string">&apos; weight for event %s is %s&apos;</span> % ( event , weighted ( event ) )
+</code></pre>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(265578812);" id="abstract-reweightingclick-to-expand"><i class="fa fa-bell"></i> Abstract reweighting<span id="heading-265578812">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-265578812"><h2 id="abstract-reweighting"><em>Abstract reweighting</em></h2>
+<p>Due to the freadom in choosing the accessor function, one can apply reweighting procedure to the absolutely abstract samples. E.g. consider the follwing case </p>
+<ul>
+<li><em>data distribution</em> : simple function </li>
+<li><em>simulated sample</em>  : random number generator </li>
+</ul>
+<p>As a result of <em>reweighting</em> procedure, we&apos;ll get <em>reweighted simulated sample</em>, that  will be just a  random number generator, that produces  the <em>weighted</em> distribution  according to the specified function. For this case, the code is very transparent and compact:</p>
+<pre><code class="lang-python"><span class="hljs-comment"># =============================================================================</span>
+<span class="hljs-comment">## 1)  ``DATA distribution&apos;&apos;  - plain function</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">data</span> <span class="hljs-params">( x )</span> :</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.5</span> + math.sin ( x * math.pi )**<span class="hljs-number">2</span> 
+<span class="hljs-comment"># =============================================================================</span>
+<span class="hljs-comment">## 2) ``simulation template&apos;&apos; -  histogram template for simulated sample </span>
+mc_hist = ROOT.TH1F ( <span class="hljs-string">&apos;hMC&apos;</span>, <span class="hljs-string">&apos;&apos;</span>, <span class="hljs-number">20</span> , <span class="hljs-number">0</span> , <span class="hljs-number">1</span>  )
+<span class="hljs-comment"># =============================================================================</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mc_sample</span> <span class="hljs-params">()</span> :</span>
+    x = random.expovariate ( <span class="hljs-number">1</span> )
+    <span class="hljs-keyword">while</span> x  &gt; <span class="hljs-number">1</span>  : x -=<span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> x
+<span class="hljs-comment"># =============================================================================</span>
+<span class="hljs-comment">## 3) create empty database with initial weights </span>
+<span class="hljs-comment"># =============================================================================</span>
+<span class="hljs-keyword">import</span> Ostap.ZipShelve <span class="hljs-keyword">as</span> DBASE
+<span class="hljs-keyword">if</span> os.path.exists ( dbname ) : os.remove ( dbname )
+<span class="hljs-keyword">with</span> DBASE.open( dbname ,<span class="hljs-string">&apos;c&apos;</span>) <span class="hljs-keyword">as</span> db : 
+</code></pre>
+<p>And then one starts iterations:</p>
+<pre><code class="lang-python"><span class="hljs-comment"># ============================================================================</span>
+<span class="hljs-comment">## 4) prepare reweigthing iterations</span>
+<span class="hljs-comment"># ===========================================================================</span>
+<span class="hljs-keyword">from</span> Ostap.Reweighting <span class="hljs-keyword">import</span> Weight, makeWeights,  WeightingPlot
+<span class="hljs-keyword">from</span> Ostap.Selectors   <span class="hljs-keyword">import</span> SelectorWithVars, Variable   
+<span class="hljs-keyword">for</span> iter <span class="hljs-keyword">in</span> range ( <span class="hljs-number">100</span> ) :    
+    <span class="hljs-comment">##                                             accessor       address in DB    </span>
+    weighter   = Weight( dbname ,  ( Weight.Var ( <span class="hljs-keyword">lambda</span> x : x , <span class="hljs-string">&apos;x-reweight&apos;</span>  ) , ) ) 
+
+    <span class="hljs-comment">## create ``weighted&apos;&apos; simulated  dataset using the current weights</span>
+    selector = SelectorWithVars (
+        selection  = <span class="hljs-string">&apos;1&lt;2&apos;</span> , <span class="hljs-comment">## fake one :-( to be removed soon </span>
+        silence    = <span class="hljs-keyword">True</span>  , 
+        variables  = [ Variable ( <span class="hljs-string">&apos;x&apos;</span>      , <span class="hljs-string">&apos;x-var&apos;</span>  , <span class="hljs-number">0</span>  , <span class="hljs-number">1</span>  , <span class="hljs-keyword">lambda</span> x : x ) ,  
+                       Variable ( <span class="hljs-string">&apos;weight&apos;</span> , <span class="hljs-string">&apos;weight&apos;</span> , accessor = weighter    ) ] )    
+    <span class="hljs-keyword">for</span>  i <span class="hljs-keyword">in</span>  range ( <span class="hljs-number">1000000</span> ) :
+        x = mc_sample () 
+        selector ( x )
+    mcds = selector.data 
+    <span class="hljs-comment">##  update weights: the rule to create weighted simulated histogram</span>
+    plots = [ WeightingPlot ( <span class="hljs-string">&apos;x&apos;</span> , <span class="hljs-string">&apos;weight&apos;</span> , <span class="hljs-string">&apos;x-reweight&apos;</span> , data , mc_hist  ) ]    
+    <span class="hljs-comment">## calculate the updated weights and add them into   database  </span>
+    more = makeWeights ( mcds , plots , dbname , delta = <span class="hljs-number">0.01</span> )
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> more <span class="hljs-keyword">and</span> <span class="hljs-number">2</span> &lt;= iter : 
+        logger.info ( <span class="hljs-string">&apos;No more iterations are needed #%d&apos;</span> % iter )
+        <span class="hljs-keyword">break</span>
+</code></pre>
+<p>The full example for <em>abstract reweighting</em>, is  accessible <a href="https://gist.github.com/VanyaBelyaev/9a2605cb4a0a84d1fe21579636a2611e" target="_blank">here</a></p>
+<p>The <em>density</em> distribution for the <em>simulated</em> sample for before the first (blue open squares) and after the last (filled red points) iterations are shown here, <img src="img/RW3_1.png" alt="iterations3"> 
+while the comparison of the initial <em>data distribution</em> (red line)   and the  <em>reweighted simulated   sample</em> (greed filled diamonods) are shown here. <img src="img/RW3_2.png" alt="results3"></p>
+</div></div></p>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(3649565041);" id="why-one-needs-iterationsclick-to-expand"><i class="fa fa-bell"></i> Why one needs iterations?<span id="heading-3649565041">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-3649565041"><p>One can argue that low-dimension reweigthing can be done withoky  iterations, just in one-go. Why one needs iterations here? </p>
+<p>The answer is rather simple: yes for very simple  case, like 1D-reweigthing, already the first iteration  should provide the exact result. However it is true only if <em>data dsitribution</em> is suppleds and the historgam and the template for the <em>simulated</em> histogram has the same binning. Otherwise the differnt binning scheme results in non-exact result for 1-step reweighting.  </p>
+<p>For multidimensional reweighting one can avoid iteration only if all innvolved variables are totally uncorrelated,  otherwise the iterative procedure is unavoidable. </p>
+<p>Moreover in the presense of correlations <em>oscillation effect</em> could occur, that prevents the quick convergency of the iterative procedure. To solve this problem, <code>makeWeighted</code>-function fior multidimensional case actually <em>under-correct</em>  the results.  It increases the number of nesessary iterations and make the reweighting procedure more slow, but itpractially eliminates the <em>oscillation effect</em></p>
+</div></div></p>
+<h2 id="examples">Examples</h2>
+<h3 id="simple-1d-reweighting"><em>Simple</em> <code>1D</code><em>-reweighting</em></h3>
+<p>The example of simple 1D-reweighting can be inspected <a href="https://gist.github.com/VanyaBelyaev/ab80fc08d1d4192d348147f442d5d10d" target="_blank">here</a>, while the reweigthing  result for the last iteration (blue  open squares) are compared with <em>data distribution</em> (red filled circled) here:<img src="img/RW1_2.png" alt="results1">  </p>
+<p>The example also illustrates how to use various <em>histogram comparison functions</em> to have better control over the iterative process </p>
+<h3 id="more-complicated-case-of-non-factorizeable-2d-reweighting"><em>More complicated case of non-factorizeable</em> <code>2D</code><em>-reweighting</em></h3>
+<p>The example of advanced 2D-reweighting can be inspected here
+In this example we have three <em>data distributions</em>
+  1  one-dimensional <code>x</code>-distribution with fine binninig
+  1  one-dimensional <code>y</code>-distribution with fine binninig
+  1  two-dimensional <code>y:x</code>-distribution with coarse binning</p>
+<p>It reflects the frequent case of <em>kinematic reweighting</em> usingtransverse momentum and rapidity. Typically one has enough events to make fine-binned one-dimensional distributions, but two-dimensional distributions  can be obtained only with  relatively coarse binning  scheme.   </p>
+
                                 
                                 </section>
                             
@@ -568,7 +807,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Reweighting","level":"3.2.3","depth":2,"next":{"title":"PidCalib","level":"3.2.4","depth":2,"path":"tools/pidcalib.md","ref":"tools/pidcalib.md","articles":[]},"previous":{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/reweighting.md","mtime":"2018-03-25T13:30:38.362Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-25T13:33:04.682Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Reweighting","level":"3.2.3","depth":2,"next":{"title":"PidCalib","level":"3.2.4","depth":2,"path":"tools/pidcalib.md","ref":"tools/pidcalib.md","articles":[]},"previous":{"title":"Chopping","level":"3.2.2","depth":2,"path":"tools/chopping.md","ref":"tools/chopping.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/reweighting.md","mtime":"2018-03-26T11:55:49.735Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T11:57:59.467Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

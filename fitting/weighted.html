@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Background models · GitBook</title>
+        <title>Weighted fits · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="others.html" />
+    <link rel="next" href="contraints.html" />
     
     
-    <link rel="prev" href="signals.html" />
+    <link rel="prev" href="splot.html" />
     
 
     </head>
@@ -281,7 +281,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.1.2.2" data-path="backgrounds.html">
+        <li class="chapter " data-level="3.1.2.2" data-path="backgrounds.html">
             
                 <a href="backgrounds.html">
             
@@ -364,7 +364,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.1.5" data-path="weighted.html">
+        <li class="chapter active" data-level="3.1.5" data-path="weighted.html">
             
                 <a href="weighted.html">
             
@@ -536,7 +536,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Background models</a>
+        <a href=".." >Weighted fits</a>
     </h1>
 </div>
 
@@ -551,41 +551,13 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="generic-backrgound-models"><em>Generic backrgound models</em></h1>
-<p>Here is incomplete list of <em>background-like</em> models - the models that often could be used to describe the background distribution</p>
-<h2 id="polynomial-models"><em>Polynomial models</em></h2>
-<p>Here the list of the most useful polynomial models:</p>
-<ul>
-<li><code>PolyPos_pdf</code>  : positive (non-negative) polynomial </li>
-<li><code>PolyEven_pdf</code> : positibe (non-negative) <em>symmetric</em> polynomial:  <code>p(x)= p(2*x0-x)</code>, where <code>x0=0.5*(xmin+xmax)</code> </li>
-<li><code>Monotonic_pdf</code> : positive (non-negative) polynomial with fixed sign of the first derivative: posynomial either non-decreasing or non-increasing</li>
-<li><code>Convex_pdf</code> : positive (non-negative) polynomial with fixed signs of the first (non-decreasing or non-increasing) and second (convex or concave) derivatives</li>
-<li><code>ConvexOnly_pdf</code> : positive (non-negative) polynomial with fixed sign of the second (convex or concave) derivative</li>
-</ul>
-<h2 id="phasespace-based-models"><em>Phasespace-based models</em></h2>
-<p>Here the list of the most useful phasespace-based models:</p>
-<ul>
-<li><code>PS2_pdf</code>       : 2-body phase space (no parameters)</li>
-<li><code>PSLeft_pdf</code>    : Low  edge of N-body phase space </li>
-<li><code>PSRight_pdf</code>   : High edge of L-body phase space from N-body decays  </li>
-<li><code>PSNL_pdf</code>      : approximation for L-body phase space from N-body decays  </li>
-<li><code>PS23L_pdf</code>     : 2-body phase space from 3-body decays with orbital momenta</li>
-</ul>
-<h2 id="polynomial-based-models"><em>Polynomial-based models</em></h2>
-<ul>
-<li><code>Bkg_pdf</code>      : The  exponential function, modulated by the positive polynomial. In practice it is the most useful function to describe the combinatorial background</li>
-<li><code>PSPol_pdf</code>    :  L-body phase space from N-body decays modulated by a positive polynomial  </li>
-<li><code>Sigmoid_pdf</code>  : sigmoid function (<code>atanh</code>) modulated by the positive polynomial </li>
-<li><code>TwoExpoPoly_pdf</code> : difference of two exponents, modulated by the positive polynomial</li>
-</ul>
-<h2 id="spline-based-models"><em>Spline-based models</em></h2>
-<p>The models, based on <em>B-splines</em> : </p>
-<ul>
-<li><code>PSpline_pdf</code>      : positive (non-negative)  spline </li>
-<li><code>MSpline_pdf</code>      : positive (non-negative) monothonic (non-decreasing or non-increasing) spline </li>
-<li><code>CSpline_pdf</code>      : positive (non-negative) monothonic (non-decreasing or non-inclreasing) convex or concave spline </li>
-<li><code>CPSpline_pdf</code>     : positive (non-negative) convex or concave spline </li>
-</ul>
+                                <h1 id="using-weighted-fits">Using <em>Weighted fits</em></h1>
+<p>Often one needs to fit <em>weighted dataset</em>, etg.  <em>backrgonud-subtracted</em><br>or <em>efficiency_corrected</em>. It is purely trivial in Ostap:</p>
+<pre><code class="lang-python">dataset = ...
+dsw     = dataset.makeWeighted( <span class="hljs-string">&apos;S_sw/eff&apos;</span> ) <span class="hljs-comment">## </span>
+model   = ...
+model.fitTo ( dsw , .... , sumw2 = <span class="hljs-keyword">True</span> , ... ) <span class="hljs-comment">## &lt;--- HERE</span>
+</code></pre>
 
                                 
                                 </section>
@@ -613,12 +585,12 @@
 
             
                 
-                <a href="signals.html" class="navigation navigation-prev " aria-label="Previous page: Signal models">
+                <a href="splot.html" class="navigation navigation-prev " aria-label="Previous page: sPlot">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="others.html" class="navigation navigation-next " aria-label="Next page: Other models">
+                <a href="contraints.html" class="navigation navigation-next " aria-label="Next page: Constraints">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -629,7 +601,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Background models","level":"3.1.2.2","depth":3,"next":{"title":"Other models","level":"3.1.2.3","depth":3,"path":"fitting/others.md","ref":"fitting/others.md","articles":[]},"previous":{"title":"Signal models","level":"3.1.2.1","depth":3,"path":"fitting/signals.md","ref":"fitting/signals.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/backgrounds.md","mtime":"2018-03-26T11:55:49.731Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T11:57:59.467Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Weighted fits","level":"3.1.5","depth":2,"next":{"title":"Constraints","level":"3.1.6","depth":2,"path":"fitting/contraints.md","ref":"fitting/contraints.md","articles":[]},"previous":{"title":"sPlot","level":"3.1.4","depth":2,"path":"fitting/splot.md","ref":"fitting/splot.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"fitting/weighted.md","mtime":"2018-03-26T11:55:49.731Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T11:57:59.467Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
