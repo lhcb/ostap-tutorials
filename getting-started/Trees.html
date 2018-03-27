@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Tools · GitBook</title>
+        <title>Simple operations with trees · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="tmva.html" />
+    <link rel="next" href="DBASE.html" />
     
     
-    <link rel="prev" href="../fitting/contraints.html" />
+    <link rel="prev" href="Histos.html" />
     
 
     </head>
@@ -117,9 +117,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="../getting-started/">
+        <li class="chapter " data-level="2.1" data-path="./">
             
-                <a href="../getting-started/">
+                <a href="./">
             
                     
                     Getting started
@@ -131,9 +131,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="../getting-started/VE.html">
+        <li class="chapter " data-level="2.1.1" data-path="VE.html">
             
-                <a href="../getting-started/VE.html">
+                <a href="VE.html">
             
                     
                     Values with uncertainties
@@ -144,9 +144,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.2" data-path="../getting-started/Histos.html">
+        <li class="chapter " data-level="2.1.2" data-path="Histos.html">
             
-                <a href="../getting-started/Histos.html">
+                <a href="Histos.html">
             
                     
                     Simple operations with histograms
@@ -157,9 +157,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3" data-path="../getting-started/Trees.html">
+        <li class="chapter active" data-level="2.1.3" data-path="Trees.html">
             
-                <a href="../getting-started/Trees.html">
+                <a href="Trees.html">
             
                     
                     Simple operations with trees
@@ -170,9 +170,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.4" data-path="../getting-started/DBASE.html">
+        <li class="chapter " data-level="2.1.4" data-path="DBASE.html">
             
-                <a href="../getting-started/DBASE.html">
+                <a href="DBASE.html">
             
                     
                     Persistency
@@ -395,9 +395,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.2" data-path="./">
+        <li class="chapter " data-level="3.2" data-path="../tools/">
             
-                <a href="./">
+                <a href="../tools/">
             
                     
                     Tools
@@ -409,9 +409,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.2.1" data-path="tmva.html">
+        <li class="chapter " data-level="3.2.1" data-path="../tools/tmva.html">
             
-                <a href="tmva.html">
+                <a href="../tools/tmva.html">
             
                     
                     TMVA
@@ -422,9 +422,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.2" data-path="chopping.html">
+        <li class="chapter " data-level="3.2.2" data-path="../tools/chopping.html">
             
-                <a href="chopping.html">
+                <a href="../tools/chopping.html">
             
                     
                     Chopping
@@ -435,9 +435,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.3" data-path="reweighting.html">
+        <li class="chapter " data-level="3.2.3" data-path="../tools/reweighting.html">
             
-                <a href="reweighting.html">
+                <a href="../tools/reweighting.html">
             
                     
                     Reweighting
@@ -448,9 +448,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.4" data-path="pidcalib.html">
+        <li class="chapter " data-level="3.2.4" data-path="../tools/pidcalib.html">
             
-                <a href="pidcalib.html">
+                <a href="../tools/pidcalib.html">
             
                     
                     PidCalib
@@ -536,7 +536,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Tools</a>
+        <a href=".." >Simple operations with trees</a>
     </h1>
 </div>
 
@@ -551,14 +551,95 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="tools">Tools</h1>
-<p>There are several <em>tools</em> embedded in Ostap to implement common analysis operations  </p>
-<ul>
-<li><a href="tools/tmva.md">using <code>TMVA</code></a> </li>
-<li><a href="tools/chopping.md">training <code>TMVA</code>  using <em>chopping</em> approach</a> </li>
-<li><a href="reweighting.html">Reweighting</a> </li>
-<li><a href="pidcalib.html">easier access and manipulations with <code>PidCalib</code></a> </li>
-</ul>
+                                <h1 id="operations-with-treeschains">Operations with trees/chains</h1>
+<h2 id="general"><em>General</em></h2>
+<pre><code class="lang-python">tree = ...
+<span class="hljs-keyword">print</span> tree.branches() 
+<span class="hljs-keyword">print</span> tree.leaves() 
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Number of entries %s&apos;</span> % len ( tree )
+</code></pre>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(5679274280);" id="for-large-number-of-bracnhesclick-to-expand"><i class="fa fa-bell"></i> For large number of bracnhes...<span id="heading-5679274280">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-5679274280"><p>For trees  with very large number of bracnhes (<em>feature</em> of LHCb) one can improves printout:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span>   Ostap.Logger <span class="hljs-keyword">import</span> multicolumn
+<span class="hljs-keyword">print</span> <span class="hljs-string">&apos;Branches: \n%s&apos;</span> % muhlticolumn ( tree.branches() )
+</code></pre>
+</div></div></p>
+<h2 id="statistic-for-the-given-variableexpression"><em>Statistic for the given variable/expression</em></h2>
+<pre><code class="lang-python">st1 = tree.statVar(<span class="hljs-string">&apos;m&apos;</span>)
+st2 = tree.statVar(<span class="hljs-string">&apos;m&apos;</span>,<span class="hljs-string">&apos;pt&gt;10&apos;</span>)
+st3 = tree.statVar(<span class="hljs-string">&apos;m/eff&apos;</span>,<span class="hljs-string">&apos;(pt&gt;10)*trg_eff&apos;</span>)
+</code></pre>
+<p>The results are in a form of <code>WStatEntity</code>, <em>weighted</em> <code>StatEntity</code>)</p>
+<pre><code class="lang-python">ncorr = tree.sumVar(<span class="hljs-string">&apos;S_sw/eff&apos;</span>,<span class="hljs-string">&apos;pt&gt;10&apos;</span>)
+</code></pre>
+<p>Also one can get statistics and covariances for the pair of variables/expressions:</p>
+<pre><code class="lang-python">s1 , s2 , cov2 = tree.statCov ( <span class="hljs-string">&apos;pt&apos;</span> , <span class="hljs-string">&apos;p&apos;</span> , <span class="hljs-string">&apos;pt&gt;10&apos;</span> )
+</code></pre>
+<p>Or just simple </p>
+<pre><code class="lang-python">mn , mx = tree.minmax(<span class="hljs-string">&apos;1/eff&apos;</span>)
+</code></pre>
+<h2 id="explicit-loops"><em>Explicit loops</em></h2>
+<p>Explicit loops over the entries in tree/chain are trivial :</p>
+<pre><code class="lang-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span>  range(len(tree)) : 
+    tree.GetEntry(i)
+    <span class="hljs-keyword">if</span> tree.pt &lt;  <span class="hljs-number">10</span> : <span class="hljs-keyword">continue</span> 
+    <span class="hljs-keyword">print</span> tree.m
+</code></pre>
+<p>But the direct looping looks a bit nicer:</p>
+<pre><code class="lang-python"><span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tree : 
+    <span class="hljs-keyword">if</span> entry.pt &lt;  <span class="hljs-number">10</span> : <span class="hljs-keyword">continue</span> 
+    <span class="hljs-keyword">print</span> entry.m
+</code></pre>
+<p>Note that explciit loops are rather CPU-inefficient and slow. 
+One  can <em>drastically</em> improve performance by e.g embedding the cuts in iterator</p>
+<pre><code class="lang-python"><span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tree.withCuts(<span class="hljs-string">&apos;pt&gt;10&apos;</span>) : 
+    <span class="hljs-keyword">print</span> entry.m
+</code></pre>
+<p>One  can also specify <code>first</code> and <code>last</code> entries and display  the progress bar </p>
+<pre><code class="lang-python"><span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> tree.withCuts(<span class="hljs-string">&apos;pt&gt;10&apos;</span>, last = <span class="hljs-number">10000</span> , progress =  <span class="hljs-keyword">True</span> ) : 
+    <span class="hljs-keyword">print</span> entry.m
+</code></pre>
+<h2 id="projections"><em>Projections</em></h2>
+<pre><code class="lang-python">h1 = ...
+r  = tree.project ( h1 , <span class="hljs-string">&apos;mass&apos;</span> , <span class="hljs-string">&apos;pt&gt;10&apos;</span> )
+</code></pre>
+<p><div class="panel panel-success"><div class="panel-heading"><h3 class="panel-title" onclick="javascript:toggle(5091890858);" id="for-loooong-chains-or-huge-treesclick-to-expand"><i class="fa fa-bell"></i> For loooong chains or huge trees...<span id="heading-5091890858">Click to expand</span></h3></div><div class="panel-body" style="display: none" id="panel-5091890858"><p>The module <code>Ostap.Kisa</code> provides nice functionality for parallell processing of large chains or huge trees for <em>projections</em></p>
+<pre><code class="lang-python">h1 = ...
+long_chain =  ...
+huge_tree   =  ...
+<span class="hljs-keyword">import</span> Ostap.Kisa
+r1 = long_chain.pproject ( h1 , <span class="hljs-string">&apos;mass&apos;</span> , <span class="hljs-string">&apos;pt&gt;10&apos;</span> ) 
+r2 = huge_tree .pproject ( h1 , <span class="hljs-string">&apos;mass&apos;</span> , <span class="hljs-string">&apos;pt&gt;10&apos;</span> ) 
+</code></pre>
+<p>For long chains it makes parallelizaion on <em>per-tree</em> level,  and  for huge trees it split the tree into  chunks and parallelization 
+is applied on <em>per-chunk</em> level.</p>
+</div></div></p>
+<h2 id="data-data2-and-dataandlumi"><em>Data, Data2 and DataAndLumi</em></h2>
+<p>There is useful way to collect many ROOT files into single chains, avoiding non-existent, broken and invalid  trees 
+(that is not so rare for the outptu of Ganga)</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span>   Ostap.Data   <span class="hljs-keyword">import</span> DataAndLumi <span class="hljs-keyword">as</span> Data  
+ganga = <span class="hljs-string">&apos;/afs/cern.ch/work/i/ibelyaev/public/GANGA/workspace/ibelyaev/LocalXML&apos;</span>
+patterns_Y = [
+  ganga + <span class="hljs-string">&apos;/319/*/output/CY.root&apos;</span> , <span class="hljs-comment">## 2k+11,down</span>
+  ganga + <span class="hljs-string">&apos;/320/*/output/CY.root&apos;</span> , <span class="hljs-comment">## 2k+11,up</span>
+  ganga + <span class="hljs-string">&apos;/321/*/output/CY.root&apos;</span> , <span class="hljs-comment">## 2k+12,down</span>
+  ganga + <span class="hljs-string">&apos;/322/*/output/CY.root&apos;</span> , <span class="hljs-comment">## 2k+12,up</span>
+ ]
+data_D0Y = Data ( <span class="hljs-string">&apos;YD0/CY&apos;</span> , patterns_Y )
+<span class="hljs-keyword">print</span> data_D0Y
+chain = data_D0Y.chain 
+lumi  = data_D0Y.getLumi()
+</code></pre>
+<p>Or they can be accumulated separately, and combined later: </p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span>   Ostap.Data   <span class="hljs-keyword">import</span> DataAndLumi <span class="hljs-keyword">as</span> Data  
+ganga  = <span class="hljs-string">&apos;/afs/cern.ch/work/i/ibelyaev/public/GANGA/workspace/ibelyaev/LocalXML&apos;</span>
+d2011d = Data( <span class="hljs-string">&apos;YD0/CY&apos;</span> ,  ganga + <span class="hljs-string">&apos;/319/*/output/CY.root&apos;</span> ) <span class="hljs-comment">## 2k+11,down</span>
+d2011u = Data( <span class="hljs-string">&apos;YD0/CY&apos;</span> ,  ganga + <span class="hljs-string">&apos;/320/*/output/CY.root&apos;</span> ) <span class="hljs-comment">## 2k+11,up</span>
+d2012d = Data( <span class="hljs-string">&apos;YD0/CY&apos;</span> ,  ganga + <span class="hljs-string">&apos;/321/*/output/CY.root&apos;</span> ) <span class="hljs-comment">## 2k+12,down</span>
+d2012u = Data( <span class="hljs-string">&apos;YD0/CY&apos;</span> ,  ganga + <span class="hljs-string">&apos;/322/*/output/CY.root&apos;</span> ) <span class="hljs-comment">## 2k+12,up</span>
+d2011  = d2011d + d2011u 
+d2012  = d2012d + d2012u
+runI   = d2011  + d2011
+</code></pre>
 
                                 
                                 </section>
@@ -586,12 +667,12 @@
 
             
                 
-                <a href="../fitting/contraints.html" class="navigation navigation-prev " aria-label="Previous page: Constraints">
+                <a href="Histos.html" class="navigation navigation-prev " aria-label="Previous page: Simple operations with histograms">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="tmva.html" class="navigation navigation-next " aria-label="Next page: TMVA">
+                <a href="DBASE.html" class="navigation navigation-next " aria-label="Next page: Persistency">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -602,7 +683,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Tools","level":"3.2","depth":1,"next":{"title":"TMVA","level":"3.2.1","depth":2,"path":"tools/tmva.md","ref":"tools/tmva.md","articles":[]},"previous":{"title":"Constraints","level":"3.1.6","depth":2,"path":"fitting/contraints.md","ref":"fitting/contraints.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"tools/README.md","mtime":"2018-03-27T09:29:44.667Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-27T09:32:01.210Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Simple operations with trees","level":"2.1.3","depth":2,"next":{"title":"Persistency","level":"2.1.4","depth":2,"path":"getting-started/DBASE.md","ref":"getting-started/DBASE.md","articles":[]},"previous":{"title":"Simple operations with histograms","level":"2.1.2","depth":2,"path":"getting-started/Histos.md","ref":"getting-started/Histos.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","panels@git+https://github.com/lhcb/gitbook-plugin-panels.git#master","katex-auto-render@git+https://github.com/lhcb/gitbook-plugin-katex-auto-render.git#master","collapsible-menu","otherlink"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"collapsible-menu":{},"search":{},"otherlink":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"panels":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"katex-auto-render":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"The Starterkit team and contributors","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"getting-started/Trees.md","mtime":"2018-03-27T09:29:44.667Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-27T09:32:01.210Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
