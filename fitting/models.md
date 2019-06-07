@@ -1,6 +1,6 @@
 # PDFs and the basic models 
 
-Ostap provides set of useful wrapper and helper  class that drastically simplify the construction and manipulations with `RooAbsPdf`-objects.
+Ostap provides set of useful wrapper and helper classes that drastically simplify the construction and manipulations with `RooAbsPdf`-objects. These models can be accessed through `Ostap.FitModels`. 
 
 E.g. consider the simplest case - creation of the Gaussian PDF using the standard way the standard way:
 ```python
